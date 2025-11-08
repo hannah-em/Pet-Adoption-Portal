@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Gallery {
-    private final List<Pet> pets; // immutable list reference (treat as read-only)
+    private final List<Pet> pets;
 
     public Gallery(List<Pet> pets) {
         this.pets = pets == null ? Collections.emptyList() : Collections.unmodifiableList(pets);
@@ -22,3 +22,4 @@ public class Gallery {
         return pets.isEmpty();
     }
 }
+
