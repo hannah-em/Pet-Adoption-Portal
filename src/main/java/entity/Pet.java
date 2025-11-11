@@ -1,41 +1,37 @@
 package entity;
 
 public class Pet {
-    private String id;
     private String name;
     private String type;
     private String breed;
-    private String age;
+    private int age;
     private String gender;
     private String size;
     private String contact;
+    private  String description;
 
-    public Pet(String id, String name, String type, String breed,
-               String age, String gender, String size, String contact) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.breed = breed;
-        this.age = age;
-        this.gender = gender;
-        this.size = size;
-        this.contact = contact;
-    }
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
 
-    // Getters
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getType() { return type; }
-    public String getBreed() { return breed; }
-    public String getAge() { return age; }
-    public String getGender() { return gender; }
-    public String getSize() { return size; }
-    public String getContact() { return contact; }
+    public String getType() {return type;}
+    public void setType(String type) {this.type = type;}
 
+    public String getBreed() {return breed;}
+    public void setBreed(String breed) {this.breed = breed;}
 
-    @Override
-    public String toString() {
-        return name + " (" + type + ", " + breed + ", " + gender + ")";
-    }
+    public int getAge() {return age;}
+    public void setAge(int age) {this.age = age;}
+
+    public String getGender() {return gender;}
+    public void setGender(String gender) {this.gender = gender;}
+
+    public String getSize() {return size;}
+    public void setSize(String size) {this.size = size;}
+
+    public String getContact() {return contact;}
+    public void setContact(String contact) {this.contact = contact;}
+
+    public String getDescription() {return description;}
+    public void setDescription(String description) {this.description = description;}
+
 }
-
