@@ -5,6 +5,7 @@ import use_case.signup.SignupInputData;
 
 /**
  * Controller for the Signup Use Case.
+ * Register Their name(First Name and Last Name) and Email and Password
  */
 public class SignupController {
 
