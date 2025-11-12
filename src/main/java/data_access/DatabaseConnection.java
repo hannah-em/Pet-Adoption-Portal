@@ -10,6 +10,7 @@ public class DatabaseConnection {
 
     public static Connection connect() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL);
+        conn.setAutoCommit(true); // simpler for small projects
         createTableIfNotExists(conn);
         return conn;
     }
@@ -19,17 +20,17 @@ public class DatabaseConnection {
             CREATE TABLE IF NOT EXISTS pets (
                 id TEXT PRIMARY KEY,
                 name TEXT,
-                species TEXT,
-                gender TEXT,
+                type TEXT,
                 breed TEXT,
                 age TEXT,
+                gender TEXT,
                 size TEXT,
-                coat TEXT
+                contact TEXT
             );
         """;
-
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
         }
     }
 }
+
