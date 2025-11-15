@@ -25,7 +25,7 @@ public class Pet {
     // Getters
     public String getId() { return id; }
     public String getName() { return name; }
-    public String getType() { return type; }
+    public String  getType() { return type; }
     public String getBreed() { return breed; }
     public String getAge() { return age; }
     public String getGender() { return gender; }

@@ -22,11 +22,11 @@ public class Application {
     private List<String> personal_information;
 
     // helper method, to gather all info from the user
-    private getPersonaLInformation(Visitor user) {
+    public List<String> getPersonalInfo() {
         // get all personal info from visitor
         String name = user.getName();
         String email = user.getEmail();
-        String phone_number = user.getPhone();
+        String phone_number = user.getPhoneNumber();
         String age = user.getAge();
         String occupation = user.getOccupation();
 
@@ -46,7 +46,7 @@ public class Application {
      */
     //
     public Application(Visitor user, Pet pet, String reason_to_adopt, String home_environment, int availability, String previous_experience) {
-        List<String> personal_information = getPersonalInformation(user);
+        List<String> personal_information = getPersonalInfo();
         // loop through the list, see if any is empty, if yes throw an error
         for (String info : personal_information) {
             if ("".equals(info)) {
@@ -77,6 +77,5 @@ public class Application {
     public Pet getPet() {return pet;}
     public int getAvailability() {return availability;}
     public Visitor getVisitor() {return user;}
-
 
 }
