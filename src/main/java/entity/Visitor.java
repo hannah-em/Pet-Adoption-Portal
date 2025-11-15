@@ -6,10 +6,8 @@ public class Visitor extends User{
     private String address;
     private String homeEvi;
     private String occupation;
-    private String contactInfo;
-    private String adoptionReason;
-    private String availability;
-    private String prevExp;
+    private String phoneNum;
+    private String email;
     private String age;
 
     /**
@@ -25,10 +23,7 @@ public class Visitor extends User{
         this.address = "";
         this.homeEvi = "";
         this.occupation = "";
-        this.contactInfo = "";
-        this.adoptionReason = "";
-        this.availability = "";
-        this.prevExp = "";
+        this.email = "";
         this.age = "";
     }
 
@@ -64,36 +59,12 @@ public class Visitor extends User{
         this.occupation = occupation;
     }
 
-    public String getContactInfo() {
-        return contactInfo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
-    public String getAdoptionReason() {
-        return adoptionReason;
-    }
-
-    public void setAdoptionReason(String adoptionReason) {
-        this.adoptionReason = adoptionReason;
-    }
-
-    public String getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
-
-    public String getPrevExp() {
-        return prevExp;
-    }
-
-    public void setPrevExp(String prevExp) {
-        this.prevExp = prevExp;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAge() {
@@ -102,5 +73,13 @@ public class Visitor extends User{
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
