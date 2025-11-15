@@ -10,6 +10,9 @@ public class Pet {
     private String contact;
     private  String description;
 
+    public Pet(String name, String type, String breed, int age, String gender, String size, String contact, String description) {
+    }
+
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
 
