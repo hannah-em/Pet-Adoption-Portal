@@ -11,6 +11,8 @@ public class Visitor extends User{
     private String availability;
     private String prevExp;
     private String age;
+    private String phoneNumber;
+    private String email;
 
     /**
      * Creates a new user with the given non-empty name and non-empty password.
@@ -103,4 +105,12 @@ public class Visitor extends User{
     public void setAge(String age) {
         this.age = age;
     }
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 }
