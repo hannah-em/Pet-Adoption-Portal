@@ -6,7 +6,7 @@ public interface AddPetDataAccessInterface {
     /**
      * Returns true if a pet with this name already exists.
      */
-    boolean existsByName(String name);
+    boolean existsById(String id);
 
     /**
      * Saves a new pet to the data store.

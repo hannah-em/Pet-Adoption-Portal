@@ -23,15 +23,16 @@ public class AddPetInteractor implements AddPetInputBoundary {
         }
 
         // Create new Pet entity using factory
+        String id = addPetInputData.getId();
         String petType = addPetInputData.getType();
         String breed = addPetInputData.getBreed();
-        int age = addPetInputData.getAge();
+        String age = addPetInputData.getAge();
         String gender = addPetInputData.getGender();
         String size = addPetInputData.getSize();
         String contact = addPetInputData.getContact();
-        String description = addPetInputData.getDescription();
 
-        Pet newPet = petFactory.create(petName, petType, breed, age, gender, size, contact, description);
+
+        Pet newPet = petFactory.create(id,petName, petType, breed, age, gender, size, contact);
 
         // Save to data access layer
         gallery.add(newPet);
