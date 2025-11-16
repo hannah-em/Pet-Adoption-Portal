@@ -14,16 +14,16 @@ public class AddPetInteractor implements AddPetInputBoundary {
 
     @Override
     public void execute(AddPetInputData addPetInputData) {
-        String petName = addPetInputData.getName();
+        String petID = addPetInputData.getId();
 
         // Check if pet already exists
-        if (gallery.existsByName(petName)) {
+        if (gallery.existsById(petID)) {
             System.out.println("Pet already exists in gallery.");
             return;
         }
 
         // Create new Pet entity using factory
-        String id = addPetInputData.getId();
+        String petName = addPetInputData.getId();
         String petType = addPetInputData.getType();
         String breed = addPetInputData.getBreed();
         String age = addPetInputData.getAge();
@@ -32,7 +32,7 @@ public class AddPetInteractor implements AddPetInputBoundary {
         String contact = addPetInputData.getContact();
 
 
-        Pet newPet = petFactory.create(id,petName, petType, breed, age, gender, size, contact);
+        Pet newPet = petFactory.create(petID,petName, petType, breed, age, gender, size, contact);
 
         // Save to data access layer
         gallery.add(newPet);
