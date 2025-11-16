@@ -2,7 +2,8 @@ package entity;
 
 public class Visitor extends User{
 
-    private String legalName;
+    private String firstName;
+    private String lastName;
     private String address;
     private String homeEvi;
     private String occupation;
@@ -19,20 +20,31 @@ public class Visitor extends User{
      */
     public Visitor(String name, String password) {
         super(name, password);
-        this.legalName = "";
+        this.firstName = "";
+        this.lastName = "";
         this.address = "";
         this.homeEvi = "";
         this.occupation = "";
         this.email = "";
+        this.phoneNum = ""
         this.age = "";
     }
 
-    public String getLegalName() {
-        return legalName;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLegalName(String legalName) {
-        this.legalName = legalName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -82,4 +94,5 @@ public class Visitor extends User{
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
+
 }
