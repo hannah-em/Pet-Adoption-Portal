@@ -90,9 +90,23 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
                         if (evt.getSource().equals(submit)) {
                             final SubmitState currentState = submitViewModel.getState();
 
-                            submitController.execute()
+                            submitController.execute(
+                                    currentState.getPetId(),
+                                    currentState.getUsername(),
+                                    currentState.getFirstname(),
+                                    currentState.getLastname(),
+                                    currentState.getAge(),
+                                    currentState.getOccupation(),
+                                    currentState.getAddress(),
+                                    currentState.getHomeEvi(),
+                                    currentState.getTel(),
+                                    currentState.getEmail(),
+                                    currentState.getReason(),
+                                    currentState.getPrevExp(),
+                                    currentState.getAvailability()
+                            );
 
-                            JOptionPane.showMessageDialog(this,
+                            JOptionPane.showMessageDialog(SubmitView.this,
                                     "Your application has been successfully submitted!");
 
                         }
@@ -100,7 +114,12 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
-        cancel.addActionListener(this);
+        cancel.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        submitController.switchToBrowserFilterView();
+                    }
+                });
 
         addUsernameListener();
         addFirstnameListener();
@@ -270,7 +289,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
             private void documentListenerHelper() {
                 final SubmitState currentState = submitViewModel.getState();
-                currentState.setPhoneNum(telInputField.getText());
+                currentState.setTel(telInputField.getText());
                 submitViewModel.setState(currentState);
             }
             @Override
@@ -374,7 +393,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         return viewName;
     }
 
-    public void setSignupController(SubmitController controller) {
+    public void setSubmitController(SubmitController controller) {
         this.submitController = controller;
     }
 }

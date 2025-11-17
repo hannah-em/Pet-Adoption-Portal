@@ -26,7 +26,7 @@ public class Visitor extends User{
         this.homeEvi = "";
         this.occupation = "";
         this.email = "";
-        this.phoneNum = ""
+        this.phoneNum = "";
         this.age = "";
     }
 

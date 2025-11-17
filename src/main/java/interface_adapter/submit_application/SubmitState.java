@@ -1,19 +1,29 @@
 package interface_adapter.submit_application;
 
 public class SubmitState {
+
+    private String petId = "";
     private String username = "";
     private String firstname = "";
     private String lastname = "";
     private String address = "";
     private String homeEvi = "";
     private String occupation = "";
-    private String phoneNum = "";
+    private String tel = "";
     private String email = "";
     private String age = "";
     private String reason = "";
     private String prevExp = "";
     private String availability = "";
 
+
+    public String getPetId() {
+        return petId;
+    }
+
+    public void setPetId(String petId) {
+        this.petId = petId;
+    }
 
     public String getUsername() {
         return username;
@@ -57,11 +67,11 @@ public class SubmitState {
         this.occupation = occupation;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
+    public String getTel() {
+        return tel;
     }
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public String getEmail() {
