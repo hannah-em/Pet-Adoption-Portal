@@ -24,7 +24,7 @@ public class Application {
     // helper method, to gather all info from the user
     private getPersonaLInformation(Visitor user) {
         // get all personal info from visitor
-        String name = user.getName();
+        String name = user.getLegalName();
         String email = user.getEmail();
         String phone_number = user.getPhone();
         String age = user.getAge();
@@ -63,7 +63,6 @@ public class Application {
         this.previous_experience = previous_experience;
 
     }
-
 
     // Getter methods
     public List<String> getPersonalInformation() {
