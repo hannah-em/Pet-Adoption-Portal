@@ -55,7 +55,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
 
-                return userFactory.create(name, password);
+                return userFactory.create("visitor", name, password);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
