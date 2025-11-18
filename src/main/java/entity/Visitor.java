@@ -2,14 +2,13 @@ package entity;
 
 public class Visitor extends User{
 
-    private String legalName;
+    private String firstName;
+    private String lastName;
     private String address;
     private String homeEvi;
     private String occupation;
-    private String contactInfo;
-    private String adoptionReason;
-    private String availability;
-    private String prevExp;
+    private String phoneNum;
+    private String email;
     private String age;
     private String phoneNumber;
     private String email;
@@ -23,23 +22,31 @@ public class Visitor extends User{
      */
     public Visitor(String name, String password) {
         super(name, password);
-        this.legalName = "";
+        this.firstName = "";
+        this.lastName = "";
         this.address = "";
         this.homeEvi = "";
         this.occupation = "";
-        this.contactInfo = "";
-        this.adoptionReason = "";
-        this.availability = "";
-        this.prevExp = "";
+        this.email = "";
+        this.phoneNum = "";
         this.age = "";
     }
 
-    public String getLegalName() {
-        return legalName;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLegalName(String legalName) {
-        this.legalName = legalName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -66,36 +73,12 @@ public class Visitor extends User{
         this.occupation = occupation;
     }
 
-    public String getContactInfo() {
-        return contactInfo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
-    public String getAdoptionReason() {
-        return adoptionReason;
-    }
-
-    public void setAdoptionReason(String adoptionReason) {
-        this.adoptionReason = adoptionReason;
-    }
-
-    public String getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
-
-    public String getPrevExp() {
-        return prevExp;
-    }
-
-    public void setPrevExp(String prevExp) {
-        this.prevExp = prevExp;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAge() {
@@ -106,11 +89,12 @@ public class Visitor extends User{
         this.age = age;
     }
 
-    public String getPhoneNumber() {return phoneNumber;}
+    public String getPhoneNum() {
+        return phoneNum;
+    }
 
-    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
 
-    public String getEmail() {return email;}
-
-    public void setEmail(String email) {this.email = email;}
 }

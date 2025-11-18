@@ -32,7 +32,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JButton toLogin;
 
     public SignupView(SignupViewModel signupViewModel) {
-        this.signupViewModel = signupViewModel;
+        this.signupViewModel = signupViewModel; //其实是ViewModel<SignupState>所以get state会得到signup state
         signupViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
@@ -62,7 +62,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(signUp)) {
-                            final SignupState currentState = signupViewModel.getState();
+                            final SignupState currentState = signupViewModel.getState(); //取出用户输入的所有注册信息
 
                             signupController.execute(
                                     currentState.getFirstname(),

@@ -3,7 +3,7 @@ package entity;
 /**
  * A simple entity representing a user. Users have a username and password..
  */
-public abstract class User {
+public class User {
 
     private final String name;
     private final String password;
