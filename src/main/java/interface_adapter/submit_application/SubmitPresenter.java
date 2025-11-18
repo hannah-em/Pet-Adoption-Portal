@@ -29,6 +29,7 @@ public class SubmitPresenter implements SubmitOutputBoundary {
 
     @Override
     public void prepareFailView(String errorMessage) {
+        //username error or info not completed
         final SubmitState submitState = submitViewModel.getState();
         submitState.setError(errorMessage);
         submitViewModel.firePropertyChange();
