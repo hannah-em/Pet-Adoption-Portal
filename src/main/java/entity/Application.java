@@ -29,14 +29,16 @@ public class Application {
     // helper method, to gather all info from the user
     private List<String> getPersonalInformation(Visitor user) {
         // get all personal info from visitor
-        String name = user.getLegalName();
+        String first_name = user.getFirstName();
+        String last_name = user.getLastName();
         String email = user.getEmail();
         String phone_number = user.getPhoneNum();
         String age = user.getAge();
         String occupation = user.getOccupation();
 
         List<String> personal_information = new ArrayList<>();
-        personal_information.add(name);
+        personal_information.add(first_name);
+        personal_information.add(last_name);
         personal_information.add(email);
         personal_information.add(phone_number);
         personal_information.add(age);
@@ -50,7 +52,7 @@ public class Application {
      * @throws IllegalArgumentException if the password or name are empty
      */
     //
-    public Application(Visitor user, Pet pet, String reason_to_adopt, String home_environment, String availability, String previous_experience) {
+    public Application(Visitor user, String pet_id, String reason_to_adopt, String home_environment, String availability, String previous_experience) {
         List<String> personal_information = getPersonalInformation(user);
         // loop through the list, see if any is empty, if yes throw an error
         for (String info : personal_information) {
@@ -60,7 +62,7 @@ public class Application {
             }
         }
         // set all attributes
-        this.pet_id = pet.getId();
+        this.pet_id = pet_id;
         this.personal_information = personal_information;
         this.reason_to_adopt = reason_to_adopt;
         this.home_environment = home_environment;
