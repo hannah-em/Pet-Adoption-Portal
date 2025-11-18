@@ -2,14 +2,17 @@ package entity;
 
 public class Visitor extends User{
 
-    private String firstName;
-    private String lastName;
+    private String legalName;
     private String address;
     private String homeEvi;
     private String occupation;
-    private String phoneNum;
-    private String email;
+    private String contactInfo;
+    private String adoptionReason;
+    private String availability;
+    private String prevExp;
     private String age;
+    private String phoneNumber;
+    private String email;
 
     /**
      * Creates a new user with the given non-empty name and non-empty password.
@@ -20,31 +23,23 @@ public class Visitor extends User{
      */
     public Visitor(String name, String password) {
         super(name, password);
-        this.firstName = "";
-        this.lastName = "";
+        this.legalName = "";
         this.address = "";
         this.homeEvi = "";
         this.occupation = "";
-        this.email = "";
-        this.phoneNum = "";
+        this.contactInfo = "";
+        this.adoptionReason = "";
+        this.availability = "";
+        this.prevExp = "";
         this.age = "";
     }
 
-
-    public String getFirstName() {
-        return firstName;
+    public String getLegalName() {
+        return legalName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLegalName(String legalName) {
+        this.legalName = legalName;
     }
 
     public String getAddress() {
@@ -71,12 +66,36 @@ public class Visitor extends User{
         this.occupation = occupation;
     }
 
-    public String getEmail() {
-        return email;
+    public String getContactInfo() {
+        return contactInfo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public String getAdoptionReason() {
+        return adoptionReason;
+    }
+
+    public void setAdoptionReason(String adoptionReason) {
+        this.adoptionReason = adoptionReason;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    public String getPrevExp() {
+        return prevExp;
+    }
+
+    public void setPrevExp(String prevExp) {
+        this.prevExp = prevExp;
     }
 
     public String getAge() {
@@ -87,12 +106,11 @@ public class Visitor extends User{
         this.age = age;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
-    }
+    public String getPhoneNumber() {return phoneNumber;}
 
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
 
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 }
