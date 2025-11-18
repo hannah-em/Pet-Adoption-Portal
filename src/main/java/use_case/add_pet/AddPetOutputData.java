@@ -1,15 +1,27 @@
 package use_case.add_pet;
-import entity.Pet;
 
-import java.util.List;
-
-//Output Data for the AddPet usecase
 public class AddPetOutputData {
-    private final List<Pet> gallery;//change data type to gallery soon
 
-    public  AddPetOutputData(List<Pet> gallery){
-        this.gallery = gallery;
+    private final String id;
+    private final String name;
+    private final boolean success;
+
+    public AddPetOutputData(String id, String name, boolean success) {
+        this.id = id;
+        this.name = name;
+        this.success = success;
     }
 
-    public List<Pet> getGallery() {return gallery;}
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
 }
+
