@@ -1,9 +1,6 @@
 package interface_adapter.submit_application;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.signup.SignupState;
-import interface_adapter.signup.SignupViewModel;
 import use_case.submit_application.SubmitOutputBoundary;
 
 public class SubmitPresenter implements SubmitOutputBoundary {

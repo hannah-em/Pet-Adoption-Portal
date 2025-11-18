@@ -26,7 +26,7 @@ public class Application {
         // get all personal info from visitor
         String name = user.getName();
         String email = user.getEmail();
-        String phone_number = user.getPhoneNum();
+        String phone_number = user.getPhone();
         String age = user.getAge();
         String occupation = user.getOccupation();
 

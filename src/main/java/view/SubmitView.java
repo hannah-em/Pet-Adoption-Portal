@@ -404,7 +404,4 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     public void setSubmitController(SubmitController controller) {
         this.submitController = controller;
     }
-
-
-
 }
