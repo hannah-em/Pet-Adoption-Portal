@@ -1,52 +1,52 @@
-//Creating this file temporarily to put data in the database. Should be included with Main later on.
-
 package app;
 
 import data_access.*;
+import interface_adapter.browse_filter.*;
+import use_case.browse_filter.*;
+import view.BrowseFilterView;
+
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import entity.Pet;
 
 public class MainDatabase {
     public static void main(String[] args) throws Exception {
-        // Step 1: Connect to SQLite database
+        // 1. Connect to database
         Connection conn = DatabaseConnection.connect();
         DatabasePetGateway dbGateway = new DatabasePetGateway(conn);
 
-        // Step 2: Populate DB from API if empty
-        var existingPets = dbGateway.fetchPets("", "");
-        if (existingPets.isEmpty()) {
-            System.out.println("🐾 Database is empty — importing pets from API...");
+        // 2. Populate DB if memory map is empty
+        if (dbGateway.getPetCount() == 0) {
+            System.out.println("🐾 DB empty — importing pets...");
 
-            String[] speciesList = {"dog", "cat", "rabbit", "bird", "horse"}; // Can add more types
+            String[] speciesList = {"dog", "cat", "rabbit", "bird", "horse"};
             int totalImported = 0;
 
             for (String species : speciesList) {
-                // Get a new token for every API call (prevents "token expired" errors)
+
                 String token = PetfinderAuthService.getAccessToken();
                 PetfinderAPIGateway apiGateway = new PetfinderAPIGateway(token);
 
-                System.out.println("Fetching " + species + " from API...");
+                System.out.println("🐾 Fetching: " + species);
+
                 var pets = apiGateway.fetchPets(species, "");
 
-                if (pets.isEmpty()) {
-                    System.out.println("⚠️ No pets fetched for " + species + " — check API or token");
-                } else {
-                    for (var pet : pets) {
-                        dbGateway.addPet(pet);
-                    }
-                    totalImported += pets.size();
-                    System.out.println("Imported " + pets.size() + " " + species + "(s) into database!");
+                for (var pet : pets) {
+                    dbGateway.addPet(pet);      // adds to DB and updates map
                 }
+
+                totalImported += pets.size();
+                System.out.println("   → " + pets.size() + " added.");
             }
 
-            System.out.println("Total pets imported: " + totalImported);
+            System.out.println("🐾 Imported " + totalImported + " total pets!");
         }
 
-        // Step 3: Show how many pets are in the database
-        var allPets = dbGateway.fetchPets("", "");
-        System.out.println("Total pets in database: " + allPets.size());
-        for (var pet : allPets) {
-            System.out.println(pet.getType());
-        }
-
-    }
+        // 3. Show results
+        System.out.println("📦 Map size: " + dbGateway.getPetCount());
+        dbGateway.getPetMap().values().forEach(p -> System.out.println(p.getType()));
+}
 }
