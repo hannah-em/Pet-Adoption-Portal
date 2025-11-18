@@ -6,38 +6,42 @@ import entity.PetFactory;
 public class AddPetInteractor implements AddPetInputBoundary {
     private final PetFactory petFactory;
     private final AddPetDataAccessInterface gallery;
+    private final AddPetOutputBoundary presenter;
 
-    public AddPetInteractor(PetFactory petFactory, AddPetDataAccessInterface gallery) {
+    public AddPetInteractor(PetFactory petFactory,
+                            AddPetDataAccessInterface gallery,
+                            AddPetOutputBoundary presenter) {
         this.petFactory = petFactory;
         this.gallery = gallery;
+        this.presenter = presenter;
     }
 
     @Override
     public void execute(AddPetInputData addPetInputData) {
         String petID = addPetInputData.getId();
 
-        // Check if pet already exists
         if (gallery.existsById(petID)) {
-            System.out.println("Pet already exists in gallery.");
+            presenter.prepareFailView("Pet already exists.");
             return;
         }
 
-        // Create new Pet entity using factory
-        String petName = addPetInputData.getId();
-        String petType = addPetInputData.getType();
-        String breed = addPetInputData.getBreed();
-        String age = addPetInputData.getAge();
-        String gender = addPetInputData.getGender();
-        String size = addPetInputData.getSize();
-        String contact = addPetInputData.getContact();
+        // Create pet
+        Pet newPet = petFactory.create(
+                addPetInputData.getId(),
+                addPetInputData.getName(),
+                addPetInputData.getType(),
+                addPetInputData.getBreed(),
+                addPetInputData.getAge(),
+                addPetInputData.getGender(),
+                addPetInputData.getSize(),
+                addPetInputData.getContact()
+        );
 
-
-        Pet newPet = petFactory.create(petID,petName, petType, breed, age, gender, size, contact);
-
-        // Save to data access layer
         gallery.add(newPet);
 
-        System.out.println("Pet added successfully!");
+        presenter.prepareSuccessView(new AddPetOutputData(petID, addPetInputData.getName(), true));
     }
 }
+
+
 
