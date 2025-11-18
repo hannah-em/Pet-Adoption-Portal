@@ -13,14 +13,14 @@ public class AddPetPresenter implements AddPetOutputBoundary {
 
     @Override
     public void prepareSuccessView(AddPetOutputData data) {
-        viewModel.setMessage("Pet \"" + data.getName() + "\" added successfully!");
-        viewModel.firePropertyChanged();
+        viewModel.setStatusMessage(data.getMessage());
+        //viewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        viewModel.setMessage("Failed to add pet: " + errorMessage);
-        viewModel.firePropertyChanged();
+        viewModel.setStatusMessage("Failed to add pet: " + errorMessage);
+        //viewModel.firePropertyChanged();
     }
 }
 

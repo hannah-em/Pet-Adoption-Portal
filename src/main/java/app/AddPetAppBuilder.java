@@ -36,6 +36,7 @@ public class AddPetAppBuilder {
                 new AddPetInteractor(petFactory, petRepo, presenter);
 
         this.addPetController = new AddPetController(interactor);
+        this.addPetView.setViewModel(addPetViewModel);
         this.addPetView.setAddPetController(addPetController);
 
         return this;

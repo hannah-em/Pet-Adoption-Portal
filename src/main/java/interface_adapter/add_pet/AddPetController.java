@@ -11,7 +11,7 @@ public class AddPetController {
         this.addPetUsecaseInteractor = addPetUsecaseInteractor;
     }
 
-    public void execute(String id,
+    public void execute(
                         String name,
                         String type,
                         String breed,
@@ -20,7 +20,7 @@ public class AddPetController {
                         String size,
                         String contact) {
 
-        AddPetInputData inputData = new AddPetInputData(id, name, type, breed, age, gender, size, contact);
+        AddPetInputData inputData = new AddPetInputData(name, type, breed, age, gender, size, contact);
 
         addPetUsecaseInteractor.execute(inputData);
     }

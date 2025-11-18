@@ -4,24 +4,17 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class AddPetViewModel {
-
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private String statusMessage;
 
-    private String message = "";
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+    public void setStatusMessage(String message) {
+        String old = this.statusMessage;
+        this.statusMessage = message;
+        support.firePropertyChange("addPetStatus", old, this.statusMessage);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
         support.addPropertyChangeListener(l);
     }
-
-    public void firePropertyChanged() {
-        support.firePropertyChange("addPetStatus", null, message);
-    }
 }
+
