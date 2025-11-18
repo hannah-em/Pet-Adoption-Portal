@@ -2,24 +2,67 @@ package data_access;
 
 import entity.Pet;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DatabasePetGateway implements PetAPIGatewayInterface {
+
     private final Connection conn;
+
+    // In-memory cache of pets (ID → Pet)
+    private final Map<String, Pet> petMap = new HashMap<>();
 
     public DatabasePetGateway(Connection conn) {
         this.conn = conn;
+        loadAllPetsIntoMap();   // load DB into map on startup
     }
+
+    /**
+     * Loads all pets from the DB into our in-memory map.
+     */
+    private void loadAllPetsIntoMap() {
+        String sql = "SELECT * FROM pets";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Pet pet = new Pet(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("type"),
+                        rs.getString("breed"),
+                        rs.getString("age"),
+                        rs.getString("gender"),
+                        rs.getString("size"),
+                        rs.getString("contact"),
+                        rs.getString("photoUrl")  // may be NULL
+                );
+
+                petMap.put(pet.getId(), pet);
+            }
+
+            System.out.println("📥 Loaded " + petMap.size() + " pets into memory map.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // ----------------------------------------------------------
+    // FETCH METHODS
+    // ----------------------------------------------------------
 
     @Override
     public List<Pet> fetchPets(String type, String gender) {
         List<Pet> pets = new ArrayList<>();
+
         String sql = "SELECT * FROM pets WHERE type LIKE ? AND gender LIKE ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, type.isEmpty() ? "%" : type);
             stmt.setString(2, gender.isEmpty() ? "%" : gender);
+
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -31,42 +74,35 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
                         rs.getString("age"),
                         rs.getString("gender"),
                         rs.getString("size"),
-                        rs.getString("contact")
+                        rs.getString("contact"),
+                        rs.getString("photoUrl")
                 ));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return pets;
     }
 
     @Override
     public Pet fetchPetById(String petId) {
-        String sql = "SELECT * FROM pets WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, petId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Pet(
-                        rs.getString("id"),
-                        rs.getString("name"),
-                        rs.getString("type"),
-                        rs.getString("breed"),
-                        rs.getString("age"),
-                        rs.getString("gender"),
-                        rs.getString("size"),
-                        rs.getString("contact")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return petMap.get(petId);  // Fast O(1) lookup
     }
 
+
+    // ----------------------------------------------------------
+    // INSERT / UPDATE / DELETE
+    // ----------------------------------------------------------
+
     public void addPet(Pet pet) {
-        String sql = "INSERT OR REPLACE INTO pets (id, name, type, breed, age, gender, size, contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT OR REPLACE INTO pets " +
+                "(id, name, type, breed, age, gender, size, contact, photoUrl) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, pet.getId());
             stmt.setString(2, pet.getName());
             stmt.setString(3, pet.getType());
@@ -75,8 +111,15 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
             stmt.setString(6, pet.getGender());
             stmt.setString(7, pet.getSize());
             stmt.setString(8, pet.getContact());
+            stmt.setString(9, pet.getPhotoUrl());  // may be null
+
             stmt.executeUpdate();
-            System.out.println("✅ Added pet to DB: " + pet.getName());
+
+            // Update map
+            petMap.put(pet.getId(), pet);
+
+            System.out.println("✅ Added pet to DB + map: " + pet.getName());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,13 +127,30 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
 
     public void removePet(String id) {
         String sql = "DELETE FROM pets WHERE id = ?";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id);
             stmt.executeUpdate();
+
+            petMap.remove(id);
+
+            System.out.println("❌ Removed pet " + id + " from DB + map");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+    // ----------------------------------------------------------
+    // MAP ACCESSORS
+    // ----------------------------------------------------------
+
+    public Map<String, Pet> getPetMap() {
+        return Collections.unmodifiableMap(petMap);
+    }
+
+    public int getPetCount() {
+        return petMap.size();
+    }
 }
-
-
