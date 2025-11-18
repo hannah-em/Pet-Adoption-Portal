@@ -27,11 +27,11 @@ public class Application {
     private List<String> personal_information;
 
     // helper method, to gather all info from the user
-    private getPersonaLInformation(Visitor user) {
+    private List<String> getPersonalInformation(Visitor user) {
         // get all personal info from visitor
         String name = user.getLegalName();
         String email = user.getEmail();
-        String phone_number = user.getPhone();
+        String phone_number = user.getPhoneNum();
         String age = user.getAge();
         String occupation = user.getOccupation();
 
