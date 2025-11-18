@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.signup.SignupState;
 import interface_adapter.submit_application.SubmitController;
 import interface_adapter.submit_application.SubmitState;
 import interface_adapter.submit_application.SubmitViewModel;
@@ -64,19 +65,19 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         homeEviInfo.add(homeEviInputField);
 
         final JPanel reasonInfo = new JPanel();
-        homeEviInfo.setLayout(new BoxLayout(reasonInfo, BoxLayout.Y_AXIS));
-        homeEviInfo.add(new JLabel(SubmitViewModel.REASON_LABEL));
-        homeEviInfo.add(reasonInputField);
+        reasonInfo.setLayout(new BoxLayout(reasonInfo, BoxLayout.Y_AXIS));
+        reasonInfo.add(new JLabel(SubmitViewModel.REASON_LABEL));
+        reasonInfo.add(reasonInputField);
 
         final JPanel prevExpInfo = new JPanel();
-        homeEviInfo.setLayout(new BoxLayout(prevExpInfo, BoxLayout.Y_AXIS));
-        homeEviInfo.add(new JLabel(SubmitViewModel.EXP_LABEL));
-        homeEviInfo.add(prevExpInputField);
+        prevExpInfo.setLayout(new BoxLayout(prevExpInfo, BoxLayout.Y_AXIS));
+        prevExpInfo.add(new JLabel(SubmitViewModel.EXP_LABEL));
+        prevExpInfo.add(prevExpInputField);
 
         final JPanel availabilityInfo = new JPanel();
-        homeEviInfo.setLayout(new BoxLayout(availabilityInfo, BoxLayout.Y_AXIS));
-        homeEviInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
-        homeEviInfo.add(availabilityInputField);
+        availabilityInfo.setLayout(new BoxLayout(availabilityInfo, BoxLayout.Y_AXIS));
+        prevExpInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
+        prevExpInfo.add(availabilityInputField);
 
         final JPanel buttons = new JPanel();
         submit = new JButton(SubmitViewModel.SUBMIT_BUTTON_LABEL);
@@ -387,8 +388,15 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        final SubmitState state = (SubmitState) evt.getNewValue();
+        if (state.getError() != null) {
+            JOptionPane.showMessageDialog(this, state.getError());
+        }
+        if (state.getSuccess() != null) {
+            JOptionPane.showMessageDialog(this, state.getSuccess());
+        }
     }
+
     public String getViewName() {
         return viewName;
     }
@@ -396,4 +404,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     public void setSubmitController(SubmitController controller) {
         this.submitController = controller;
     }
+
+
+
 }

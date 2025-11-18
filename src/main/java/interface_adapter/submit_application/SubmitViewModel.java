@@ -22,7 +22,7 @@ public class SubmitViewModel extends ViewModel<SubmitState> {
     public static final String SUBMIT_BUTTON_LABEL = "Submit";
     public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
-    SubmitViewModel() {
+    public SubmitViewModel() {
         super("submit");
         setState(new SubmitState());
     }

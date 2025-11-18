@@ -15,6 +15,8 @@ public class SubmitState {
     private String reason = "";
     private String prevExp = "";
     private String availability = "";
+    private String error = "";
+    private String success = "";
 
 
     public String getPetId() {
@@ -109,4 +111,19 @@ public class SubmitState {
         this.availability = availability;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(String success) {
+        this.success = success;
+    }
 }
