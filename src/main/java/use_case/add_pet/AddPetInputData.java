@@ -1,7 +1,6 @@
 package use_case.add_pet;
 
 public class AddPetInputData {
-    private String id;
     private String name;
     private String type;
     private String breed;
@@ -10,9 +9,9 @@ public class AddPetInputData {
     private String size;
     private String contact;
 
-    public AddPetInputData(String id,String name, String type, String breed, String age, String gender, String size,
+    public AddPetInputData(String name, String type, String breed, String age, String gender, String size,
                            String contact) {
-        this.id = id;
+
         this.name = name;
         this.type = type;
         this.breed = breed;
@@ -22,7 +21,6 @@ public class AddPetInputData {
         this.contact = contact;
     }
 
-    public String getId() {return id;}
     public String getName() {return name;}
     public String getType() {return type;}
     public String getBreed() {return breed;}

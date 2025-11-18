@@ -3,45 +3,75 @@ package use_case.add_pet;
 import entity.Pet;
 import entity.PetFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddPetInteractor implements AddPetInputBoundary {
+
     private final PetFactory petFactory;
-    private final AddPetDataAccessInterface gallery;
+    private final AddPetDataAccessInterface petRepo;
     private final AddPetOutputBoundary presenter;
 
+
     public AddPetInteractor(PetFactory petFactory,
-                            AddPetDataAccessInterface gallery,
+                            AddPetDataAccessInterface petRepo,
                             AddPetOutputBoundary presenter) {
         this.petFactory = petFactory;
-        this.gallery = gallery;
+        this.petRepo = petRepo;
         this.presenter = presenter;
     }
 
     @Override
-    public void execute(AddPetInputData addPetInputData) {
-        String petID = addPetInputData.getId();
+    public void execute(AddPetInputData inputData) {
 
-        if (gallery.existsById(petID)) {
-            presenter.prepareFailView("Pet already exists.");
+        String generatedId = petRepo.generateId(inputData.getType());;
+        List<String> petData = new ArrayList<>();
+
+        petData.add(inputData.getName());
+        petData.add(inputData.getGender());
+        petData.add(inputData.getAge());
+        petData.add(inputData.getType());
+        petData.add(inputData.getSize());
+        petData.add(inputData.getBreed());
+
+        // -------- CHECK EMPTY FIELDS ----------
+        if (    inputData.getName().isEmpty() ||
+                inputData.getType().isEmpty() ||
+                inputData.getBreed().isEmpty() ||
+                inputData.getAge().isEmpty() ||
+                inputData.getGender().isEmpty() ||
+                inputData.getSize().isEmpty() ||
+                inputData.getContact().isEmpty()) {
+
+            presenter.prepareFailView("All fields must be filled out.");
             return;
         }
 
-        // Create pet
-        Pet newPet = petFactory.create(
-                addPetInputData.getId(),
-                addPetInputData.getName(),
-                addPetInputData.getType(),
-                addPetInputData.getBreed(),
-                addPetInputData.getAge(),
-                addPetInputData.getGender(),
-                addPetInputData.getSize(),
-                addPetInputData.getContact()
+        // -------- CHECK DUPLICATE PET ID ----------
+        if (petRepo.existsPet(petData)){
+            presenter.prepareFailView("A pet already exists.");
+            return;
+        }
+
+        // -------- CREATE PET --------
+        Pet pet = petFactory.create(
+                generatedId,
+                inputData.getName(),
+                inputData.getType(),
+                inputData.getBreed(),
+                inputData.getAge(),
+                inputData.getGender(),
+                inputData.getSize(),
+                inputData.getContact()
         );
 
-        gallery.add(newPet);
+        petRepo.add(pet);
+        //might change to save later
 
-        presenter.prepareSuccessView(new AddPetOutputData(petID, addPetInputData.getName(), true));
+        presenter.prepareSuccessView(new AddPetOutputData("Pet added successfully!", true));
     }
 }
+
 
 
 

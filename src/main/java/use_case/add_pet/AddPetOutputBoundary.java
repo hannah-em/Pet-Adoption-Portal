@@ -4,4 +4,5 @@ public interface AddPetOutputBoundary {
     void prepareSuccessView(AddPetOutputData outputData);
 
     void prepareFailView(String errorMessage);
+
 }
