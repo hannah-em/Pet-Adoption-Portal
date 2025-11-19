@@ -15,6 +15,7 @@ import interface_adapter.manage_application.ManageApplicationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.submit_application.SubmitViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -48,6 +49,8 @@ public class AppBuilder {
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
+    private SubmitView submitView;
+    private SubmitViewModel submitViewModel;
     private ManageApplicationView manageApplicationView;
     private ManageApplicationViewModel manageApplicationViewModel;
     private SignupView signupView;
@@ -59,6 +62,13 @@ public class AppBuilder {
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
+    }
+
+    public AppBuilder addSubmitView() {
+        submitViewModel = new SubmitViewModel();
+        submitView = new SubmitView(submitViewModel);
+        cardPanel.add(submitView, submitView.getViewName());
+        return this;
     }
 
     public AppBuilder addManageApplicationView() {
