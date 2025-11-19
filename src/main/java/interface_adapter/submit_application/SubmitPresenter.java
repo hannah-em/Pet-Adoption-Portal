@@ -1,6 +1,7 @@
 package interface_adapter.submit_application;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.browse_filter.BrowseFilterViewModel;
 import use_case.submit_application.SubmitOutputBoundary;
 
 public class SubmitPresenter implements SubmitOutputBoundary {

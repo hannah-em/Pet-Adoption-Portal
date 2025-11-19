@@ -7,7 +7,6 @@ public class SubmitInteractor implements SubmitInputBoundary {
     private final SubmitUserDataAccessInterface userDataAccessObject;
     private final SubmitApplicationDataAccessInterface applicationDataAccessObject;
     private final SubmitOutputBoundary submitPresenter;
-    private final Application application;
 
     public SubmitInteractor(SubmitUserDataAccessInterface userDataAccessInterface,
                             SubmitApplicationDataAccessInterface applicationDataAccessInterface,
@@ -16,7 +15,6 @@ public class SubmitInteractor implements SubmitInputBoundary {
         this.userDataAccessObject = userDataAccessInterface;
         this.applicationDataAccessObject = applicationDataAccessInterface;
         this.submitPresenter = submitOutputBoundary;
-        this.application = application;
     }
 
     @Override
