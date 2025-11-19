@@ -2,6 +2,8 @@ package view;
 
 import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
+import interface_adapter.view_pet_details.ViewPetDetailsController;
+import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +17,9 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
     private final BrowseFilterController controller;
     private final BrowseFilterViewModel viewModel;
 
+    private final ViewPetDetailsController detailsController;
+    private final ViewPetDetailsViewModel detailsViewModel;
+
     private final JTextField speciesField = new JTextField(20);
     private final JTextField genderField = new JTextField(20);
     private final JButton searchButton = new JButton("Search");
@@ -26,9 +31,14 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
     );
     private final JTable petTable = new JTable(tableModel);
 
-    public BrowseFilterView(BrowseFilterController controller, BrowseFilterViewModel viewModel) {
+    public BrowseFilterView(BrowseFilterController controller,
+                            BrowseFilterViewModel viewModel,
+                            ViewPetDetailsController detailsController,
+                            ViewPetDetailsViewModel detailsViewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
+        this.detailsController = detailsController;
+        this.detailsViewModel = detailsViewModel;
 
         viewModel.addPropertyChangeListener(this);
 
@@ -83,7 +93,6 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
             genderField.setText("");
             controller.execute("", ""); // reload all
         });
-
         setVisible(true);
     }
 
