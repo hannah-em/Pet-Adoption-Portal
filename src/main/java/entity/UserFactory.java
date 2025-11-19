@@ -11,5 +11,8 @@ public class UserFactory {
                 return new Visitor(name, password);
             case "administrator":
                 return new Administrator(name, password);
+            default:
+                throw new IllegalArgumentException("Unknown user type: " + type);
+        }
     }
 }
