@@ -22,4 +22,9 @@ public class BrowseFilterViewModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
+
+    public BrowseFilterViewModel() {
+        super("Browse and Filter");
+        setState(new BrowseFilterState);
+    }
 }
