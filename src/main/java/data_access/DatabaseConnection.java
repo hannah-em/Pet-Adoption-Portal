@@ -11,11 +11,12 @@ public class DatabaseConnection {
     public static Connection connect() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL);
         conn.setAutoCommit(true); // simpler for small projects
-        createTableIfNotExists(conn);
+        createPetTableIfNotExists(conn);
+        createApplicationTableIfNotExists(conn);
         return conn;
     }
 
-    private static void createTableIfNotExists(Connection conn) throws SQLException {
+    private static void createPetTableIfNotExists(Connection conn) throws SQLException {
         String createTableSQL = """
             CREATE TABLE IF NOT EXISTS pets (
                 id TEXT PRIMARY KEY,
