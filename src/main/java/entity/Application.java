@@ -87,5 +87,4 @@ public class Application {
     public String getAvailability() {return availability;}
     public Visitor getUser() {return user;}
 
-
 }
