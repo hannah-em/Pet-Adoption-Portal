@@ -39,7 +39,8 @@ public class DatabaseConnection {
                 id TEXT PRIMARY KEY,
                 application_id TEXT,
                 pet_id TEXT,
-                legal_name TEXT,
+                first_name TEXT,
+                last_name TEXT,
                 reason TEXT,
                 availability TEXT,
                 occupation TEXT,
@@ -55,6 +56,8 @@ public class DatabaseConnection {
 
         //pet might not be text, but an id from the pets table so we get the correct one
         //might want to find pet id using the pet entity we got from the form
+
+        // use unique application id to find the correct application
     }
 }
 
