@@ -5,5 +5,5 @@ import entity.Application;
 import java.util.List;
 
 public interface ApplicationGatewayInterface {
-//    Application fetchApplicationById(String applicationId);
+    Application fetchApplicationById(String applicationId);
 }

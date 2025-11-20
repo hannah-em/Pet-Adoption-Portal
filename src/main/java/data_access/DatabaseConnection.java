@@ -1,5 +1,7 @@
 package data_access;
 
+import entity.Visitor;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,22 +37,24 @@ public class DatabaseConnection {
     }
 
     private static void createApplicationTableIfNotExists(Connection conn) throws SQLException {
+        // NOTE: id = application id
         String createTableSQL = """
             CREATE TABLE IF NOT EXISTS applications (
                 id TEXT PRIMARY KEY,
-                application_id TEXT,
                 pet_id TEXT,
                 first_name TEXT,
                 last_name TEXT,
-                reason TEXT,
-                availability TEXT,
-                occupation TEXT,
-                age TEXT,
                 email TEXT,
                 phone TEXT,
+                age TEXT,
+                occupation TEXT,
+                reason TEXT,
+                environment TEXT,
+                availability TEXT,
                 previous_experience TEXT
             );
         """;
+
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(createTableSQL);
         }
