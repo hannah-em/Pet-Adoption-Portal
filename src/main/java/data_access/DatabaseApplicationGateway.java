@@ -47,6 +47,10 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
         }
     }
 
+    public List<Application> fetchAllApplications() {
+        return new ArrayList<>(applicationMap.values());
+    }
+
     @Override
     public Application fetchApplicationById(String application_id) { return applicationMap.get(application_id); }
 
@@ -72,6 +76,27 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
             System.out.println("✅ Added application to DB: " + application.getFirstName() + " "
                     + application.getLastName() + "'s application for"
                     + application.getPetId() + "ID: " + application.getApplicationId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Update status of application (for admin):
+    public void updateApplicationStatus (Application application, String status) {
+        String sql = "UPDATE applications SET status = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setString(2, application.getApplicationId());
+            stmt.executeUpdate(); // Update data in database
+
+            // Update in-memory map to sync
+            application.setStatus(status);
+            applicationMap.put(application.getApplicationId(), application);
+
+            System.out.println("✅ Updated status for " + application.getApplicationId()
+                    + " to " + status);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
