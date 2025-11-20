@@ -11,7 +11,6 @@ public class Visitor extends User{
     private String email;
     private String age;
     private String phoneNumber;
-    private String email;
 
     /**
      * Creates a new user with the given non-empty name and non-empty password.
