@@ -1,30 +1,17 @@
 package interface_adapter.browse_filter;
 
-import entity.Pet;
+import interface_adapter.ViewModel;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.List;
+public class BrowseFilterViewModel extends ViewModel<BrowseFilterState> {
 
-public class BrowseFilterViewModel {
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private List<String> pets;
-
-    public void setPets(List<String> pets) {
-        this.pets = pets;
-        support.firePropertyChange("pets", null, pets);
-    }
-
-    public List<String> getPets() {
-        return pets;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-    }
+    public static final String TITLE_LABEL = "Browse Pets";
+    public static final String SPECIES_LABEL = "Species";
+    public static final String GENDER_LABEL = "Gender";
+    public static final String APPLY_FILTERS_BUTTON_LABEL = "Apply Filters";
 
     public BrowseFilterViewModel() {
-        super("Browse and Filter");
-        setState(new BrowseFilterState);
+        super("browse filter");
+        setState(new BrowseFilterState());
     }
 }
+
