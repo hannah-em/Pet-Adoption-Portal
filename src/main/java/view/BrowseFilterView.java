@@ -13,12 +13,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class BrowseFilterView extends JFrame implements PropertyChangeListener {
+public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
-    private final BrowseFilterController controller;
+    private BrowseFilterController controller;
     private final BrowseFilterViewModel viewModel;
 
-    private final ViewPetDetailsController detailsController;
+    private ViewPetDetailsController detailsController;
     private final ViewPetDetailsViewModel detailsViewModel;
 
     private final JTextField speciesField = new JTextField(20);
@@ -26,71 +26,65 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
     private final JButton searchButton = new JButton("Search");
     private final JButton clearButton = new JButton("Clear Filters");
 
-    // TABLE version
     private final DefaultTableModel tableModel = new DefaultTableModel(
             new String[]{"ID", "Name", "Type", "Breed", "Gender"}, 0
     );
     private final JTable petTable = new JTable(tableModel);
 
-    public BrowseFilterView(BrowseFilterController controller,
-                            BrowseFilterViewModel viewModel,
-                            ViewPetDetailsController detailsController,
+    public BrowseFilterView(BrowseFilterViewModel viewModel,
                             ViewPetDetailsViewModel detailsViewModel) {
-        this.controller = controller;
+
         this.viewModel = viewModel;
-        this.detailsController = detailsController;
         this.detailsViewModel = detailsViewModel;
 
         viewModel.addPropertyChangeListener(this);
 
-        setTitle("Pet Adoption Portal - Browse & Filter");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 600);
-        setLocationRelativeTo(null);
+        // ========== Layout & Panels ==========
+        setLayout(new BorderLayout());
 
-        // ===== Filter Panel =====
         JPanel filterPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        // Species label + field
+        gbc.gridx = 0; gbc.gridy = 0;
         filterPanel.add(new JLabel("Species:"), gbc);
 
         gbc.gridx = 1;
         filterPanel.add(speciesField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
+        // Gender label + field
+        gbc.gridx = 0; gbc.gridy = 1;
         filterPanel.add(new JLabel("Gender:"), gbc);
 
         gbc.gridx = 1;
         filterPanel.add(genderField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
+        // Buttons
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(searchButton);
         buttonPanel.add(clearButton);
+
         filterPanel.add(buttonPanel, gbc);
 
-        // ===== TABLE results with scroll =====
+        // Table
         JScrollPane scrollPane = new JScrollPane(petTable);
         petTable.setRowHeight(28);
 
+        // Hide ID column
         petTable.getColumnModel().getColumn(0).setMinWidth(0);
         petTable.getColumnModel().getColumn(0).setMaxWidth(0);
         petTable.getColumnModel().getColumn(0).setWidth(0);
 
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(filterPanel, BorderLayout.NORTH);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
+        // Add to main panel
+        add(filterPanel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // ===== Button Actions =====
+        // ========== Button Actions ==========
         searchButton.addActionListener(e -> {
             String species = speciesField.getText().trim();
             String gender = genderField.getText().trim();
@@ -100,13 +94,12 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
         clearButton.addActionListener(e -> {
             speciesField.setText("");
             genderField.setText("");
-//            controller.execute("", ""); // reload all
-
             BrowseFilterState state = viewModel.getState();
             state.setPets(List.of());
             viewModel.firePropertyChange("pets");
         });
 
+        // ========== Row Click Listener ==========
         petTable.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -114,12 +107,12 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
                 if (row != -1) {
                     String petId = tableModel.getValueAt(row, 0).toString();
                     System.out.println("Clicked pet ID: " + petId);
+
                     new ViewPetDetailsView(detailsViewModel);
                     detailsController.execute(petId);
                 }
             }
         });
-        setVisible(true);
     }
 
     @Override
@@ -133,7 +126,6 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
         tableModel.setRowCount(0);
 
         for (String line : pets) {
-            // "id | name | type | breed | gender"
             String[] data = line.split("\\|");
             for (int i = 0; i < data.length; i++) {
                 data[i] = data[i].trim();
@@ -141,4 +133,17 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
             tableModel.addRow(data);
         }
     }
+
+    public String getViewName() {
+        return "browse and filter";
+    }
+
+    public void setBrowseFilterController(BrowseFilterController controller) {
+        this.controller = controller;
+    }
+
+    public void setDetailsController(ViewPetDetailsController detailsController) {
+        this.detailsController = detailsController;
+    }
 }
+
