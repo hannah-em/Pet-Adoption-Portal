@@ -23,8 +23,8 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
 
         JPanel formPanel = new JPanel();
         JPanel buttons = new JPanel();
-        //formPanel.setLayout(new GridLayout(1, 2, 5,0));
-        formPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        formPanel.setLayout(new GridLayout(1, 2, 5,0));
+        //formPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 25, 10));
 
         formPanel.add(new JLabel("Please Enter I.D. of the Pet you want to delete:"));
         formPanel.add(new JLabel("Pet I.D:"));
@@ -36,7 +36,7 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
         buttons.add(submitButton);
         buttons.add(cancelButton);
 
-        add(formPanel, BorderLayout.CENTER);
+        add(formPanel, BorderLayout.NORTH);
         add(buttons, BorderLayout.SOUTH);
     }
 
