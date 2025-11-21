@@ -1,12 +1,15 @@
 package app;
 
-import data_access.DBApplicationDataAccessObject;
-import data_access.DatabaseApplicationGateway;
-import data_access.DatabaseConnection;
-import data_access.FileUserDataAccessObject;
+import data_access.*;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.add_pet.AddPetPageController;
+import interface_adapter.add_pet.AddPetViewModel;
+import interface_adapter.browse_filter.BrowseFilterController;
+import interface_adapter.browse_filter.BrowseFilterPageController;
+import interface_adapter.browse_filter.BrowseFilterPresenter;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
+import interface_adapter.home.HomeViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -16,12 +19,20 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.manage_application.ManageApplicationViewModel;
+import interface_adapter.manage_application.ManageApplicationsPageController;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.submit_application.SubmitController;
+import interface_adapter.submit_application.SubmitPageController;
 import interface_adapter.submit_application.SubmitPresenter;
 import interface_adapter.submit_application.SubmitViewModel;
+import interface_adapter.view_pet_details.ViewPetDetailsController;
+import interface_adapter.view_pet_details.ViewPetDetailsPresenter;
+import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
+import use_case.browse_filter.BrowseFilterInputBoundary;
+import use_case.browse_filter.BrowseFilterInteractor;
+import use_case.browse_filter.BrowseFilterOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -37,6 +48,9 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.submit_application.SubmitInputBoundary;
 import use_case.submit_application.SubmitInteractor;
 import use_case.submit_application.SubmitOutputBoundary;
+import use_case.view_pet_details.ViewPetDetailsInputBoundary;
+import use_case.view_pet_details.ViewPetDetailsInteractor;
+import use_case.view_pet_details.ViewPetDetailsOutputBoundary;
 import view.*;
 
 import javax.swing.*;
@@ -67,6 +81,12 @@ public class AppBuilder {
     final DBApplicationDataAccessObject applicationDataAccessObject;
 
     private BrowseFilterView browseFilterView;
+    private PetAPIGatewayInterface petGateway;
+    private BrowseFilterPresenter browseFilterPresenter;
+    private ViewPetDetailsViewModel viewPetDetailsViewModel;
+    private ViewPetDetailsPresenter viewPetDetailsPresenter;
+    private ViewPetDetailsView viewPetDetailsView;
+    private ViewPetDetailsController viewPetDetailsController;
     private BrowseFilterViewModel browseFilterViewModel;
     private SubmitView submitView;
     private SubmitViewModel submitViewModel;
@@ -78,6 +98,9 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private AddPetViewModel addPetViewModel;
+    private HomeViewModel homeViewModel;
+    private HomeView homeView;
 
     public AppBuilder() {
         try {
@@ -87,8 +110,31 @@ public class AppBuilder {
         }
         this.databaseApplicationGateway = new DatabaseApplicationGateway(connection);
         this.applicationDataAccessObject = new DBApplicationDataAccessObject(databaseApplicationGateway);
+        this.petGateway = new DatabasePetGateway(connection);
 
         cardPanel.setLayout(cardLayout);
+    }
+
+    public AppBuilder addViewPetDetails() {
+        viewPetDetailsViewModel = new ViewPetDetailsViewModel();
+        viewPetDetailsView = new ViewPetDetailsView(viewPetDetailsViewModel);
+        return this;
+    }
+
+    public AppBuilder addViewPetDetailsUseCase() {
+        final ViewPetDetailsOutputBoundary viewPetDetailsOutputBoundary = new ViewPetDetailsPresenter(viewPetDetailsViewModel);
+        final ViewPetDetailsInputBoundary viewPetDetailsInputBoundary = new ViewPetDetailsInteractor(petGateway, viewPetDetailsOutputBoundary);
+
+        this.viewPetDetailsController = new ViewPetDetailsController(viewPetDetailsInputBoundary);
+        return this;
+    }
+
+    public AppBuilder addBrowseFilterView() {
+        browseFilterViewModel = new BrowseFilterViewModel();
+        browseFilterView =
+                new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel);
+        cardPanel.add(browseFilterView, browseFilterView.getViewName());
+        return this;
     }
 
     public AppBuilder addSubmitApplicationView() {
@@ -126,6 +172,32 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addHomeView() {
+        homeViewModel = new HomeViewModel();
+//        loggedInViewModel = new LoggedInViewModel(); // needed for role detection
+
+        // Create page-opening controllers (no input required)
+        BrowseFilterPageController browseFilterPageController =
+                new BrowseFilterPageController(viewManagerModel, browseFilterViewModel);
+        SubmitPageController submitPageController =
+                new SubmitPageController(viewManagerModel, submitViewModel);
+        AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
+        ManageApplicationsPageController manageApplicationsPageController =
+                new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
+
+        // Create the actual HomeView
+        homeView = new HomeView(
+                loggedInViewModel,
+                browseFilterPageController,
+                submitPageController,
+                addPetPageController,
+                manageApplicationsPageController
+        );
+
+        cardPanel.add(homeView, "home");
+        return this;
+    }
+
     //for use case
     public AppBuilder addSubmitApplicationUseCase() {
         final SubmitOutputBoundary submitOutputBoundary =
@@ -135,6 +207,19 @@ public class AppBuilder {
 
         SubmitController submitController = new SubmitController(submitInputBoundary);
         submitView.setSubmitController(submitController);
+        return this;
+    }
+
+
+
+    public AppBuilder addBrowseFilterUseCase() {
+        final BrowseFilterOutputBoundary browseFilterOutputBoundary = new BrowseFilterPresenter(browseFilterViewModel);
+        final BrowseFilterInputBoundary browseFilterInputBoundary =
+                new BrowseFilterInteractor(petGateway, browseFilterOutputBoundary);
+
+        BrowseFilterController browseFilterController = new BrowseFilterController(browseFilterInputBoundary);
+        browseFilterView.setBrowseFilterController(browseFilterController);
+        browseFilterView.setDetailsController(viewPetDetailsController);
         return this;
     }
 
@@ -188,6 +273,8 @@ public class AppBuilder {
         return this;
     }
 
+
+
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -201,3 +288,4 @@ public class AppBuilder {
 
 
 }
+
