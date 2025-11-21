@@ -130,6 +130,5 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
         loadAllPetsIntoMap();
     }
 }
-}
 
 
