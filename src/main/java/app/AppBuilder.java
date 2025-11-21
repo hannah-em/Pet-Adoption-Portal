@@ -81,6 +81,7 @@ public class AppBuilder {
 
     public AppBuilder() {
         try {
+            //TODO: DatabaseConnection.connect() does not work; try to fix
             this.connection = DatabaseConnection.connect();
         } catch (SQLException e) {
             throw new RuntimeException(e);
