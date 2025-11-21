@@ -5,33 +5,40 @@ import java.util.List;
 
 public class Application {
 
+    // Class variable to keep track of how many applcations, used as id
+    public static int counter = 0;
+
+    // Application ID for internal use
+    private String application_id;
+
     // Applicant Information
     private Visitor user;
 
-    // Which Pet to adopt - !!!! Might change to ID !!!!!;
-    private Pet pet; // !! Might change to pet id !!!! //
+    // Which Pet to adopt by id
+    private String pet_id;
 
     //
     private String reason_to_adopt;
     private String home_environment; // describe, apartment, small, big, etc.
     // give hint on how to fill out each field
-    private int availability;
-    // indicate by 0-10, 10 means someone is going to be home all the time with the pet
-    // or by hours per week or smth;
+    private String availability;
+    // explain their availability
     private String previous_experience;
     private List<String> personal_information;
 
     // helper method, to gather all info from the user
-    public List<String> getPersonalInfo() {
+    private List<String> getPersonalInformation(Visitor user) {
         // get all personal info from visitor
-        String name = user.getName();
+        String first_name = user.getFirstName();
+        String last_name = user.getLastName();
         String email = user.getEmail();
-        String phone_number = user.getPhoneNumber();
+        String phone_number = user.getPhoneNum();
         String age = user.getAge();
         String occupation = user.getOccupation();
 
         List<String> personal_information = new ArrayList<>();
-        personal_information.add(name);
+        personal_information.add(first_name);
+        personal_information.add(last_name);
         personal_information.add(email);
         personal_information.add(phone_number);
         personal_information.add(age);
@@ -45,8 +52,8 @@ public class Application {
      * @throws IllegalArgumentException if the password or name are empty
      */
     //
-    public Application(Visitor user, Pet pet, String reason_to_adopt, String home_environment, int availability, String previous_experience) {
-        List<String> personal_information = getPersonalInfo();
+    public Application(Visitor user, String pet_id, String reason_to_adopt, String home_environment, String availability, String previous_experience) {
+        List<String> personal_information = getPersonalInformation(user);
         // loop through the list, see if any is empty, if yes throw an error
         for (String info : personal_information) {
             if ("".equals(info)) {
@@ -55,15 +62,16 @@ public class Application {
             }
         }
         // set all attributes
-        this.pet = pet;
+        this.pet_id = pet_id;
         this.personal_information = personal_information;
         this.reason_to_adopt = reason_to_adopt;
         this.home_environment = home_environment;
         this.availability = availability;
         this.previous_experience = previous_experience;
+        this.application_id = Integer.toString(counter); // use counter count as id of application
+        counter++; // increase counter count by 1
 
     }
-
 
     // Getter methods
     public List<String> getPersonalInformation() {
@@ -74,8 +82,9 @@ public class Application {
     }
     public String getHomeEnvironment() {return home_environment;}
     public String getPreviousExperience() {return previous_experience;}
-    public Pet getPet() {return pet;}
-    public int getAvailability() {return availability;}
-    public Visitor getVisitor() {return user;}
+    public String getPetId() {return pet_id;}
+    public String getApplicationId() {return application_id;}
+    public String getAvailability() {return availability;}
+    public Visitor getUser() {return user;}
 
 }
