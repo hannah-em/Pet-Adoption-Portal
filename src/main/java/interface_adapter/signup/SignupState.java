@@ -4,6 +4,7 @@ package interface_adapter.signup;
  * The state for the Signup View Model.
  */
 public class SignupState {
+    private String usertype;
     private String firstname = "";
     private String firstnameError = "";
     private String lastname = "";
@@ -16,6 +17,7 @@ public class SignupState {
     private String repeatPasswordError = "";
 
     // --- Getters ---
+    public String getUserType() { return usertype;}
     public String getFirstname() {
         return firstname;
     }
@@ -50,6 +52,7 @@ public class SignupState {
     }
 
     // --- Setters ---
+    public void setUserType(String usertype) {this.usertype = usertype;}
 
     public void setFirstname(String firstname) {this.firstname = firstname;}
 
@@ -86,6 +89,7 @@ public class SignupState {
     @Override
     public String toString() {
         return "SignupState{"
+                + "usertype='" + usertype + '\''
                 + "firstname='" + firstname + '\''
                 + ", lastname='" + lastname + '\''
                 + ", username='" + username + '\''
