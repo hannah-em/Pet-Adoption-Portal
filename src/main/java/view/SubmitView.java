@@ -106,10 +106,6 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
                                     currentState.getPrevExp(),
                                     currentState.getAvailability()
                             );
-
-                            JOptionPane.showMessageDialog(SubmitView.this,
-                                    "Your application has been successfully submitted!");
-
                         }
                     }
                 }
@@ -388,6 +384,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //updating the error or success message in submit state
         final SubmitState state = (SubmitState) evt.getNewValue();
         if (state.getError() != null) {
             JOptionPane.showMessageDialog(this, state.getError());

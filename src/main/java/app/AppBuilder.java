@@ -1,8 +1,12 @@
 package app;
 
+import data_access.DBApplicationDataAccessObject;
+import data_access.DatabaseApplicationGateway;
+import data_access.DatabaseConnection;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.browse_filter.BrowseFilterViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -15,6 +19,9 @@ import interface_adapter.manage_application.ManageApplicationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.submit_application.SubmitController;
+import interface_adapter.submit_application.SubmitPresenter;
+import interface_adapter.submit_application.SubmitViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -27,10 +34,15 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.submit_application.SubmitInputBoundary;
+import use_case.submit_application.SubmitInteractor;
+import use_case.submit_application.SubmitOutputBoundary;
 import view.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -48,6 +60,16 @@ public class AppBuilder {
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
+
+    // Application DAO using a database
+    final Connection connection;
+    final DatabaseApplicationGateway  databaseApplicationGateway;
+    final DBApplicationDataAccessObject applicationDataAccessObject;
+
+    private BrowseFilterView browseFilterView;
+    private BrowseFilterViewModel browseFilterViewModel;
+    private SubmitView submitView;
+    private SubmitViewModel submitViewModel;
     private ManageApplicationView manageApplicationView;
     private ManageApplicationViewModel manageApplicationViewModel;
     private SignupView signupView;
@@ -58,7 +80,22 @@ public class AppBuilder {
     private LoginView loginView;
 
     public AppBuilder() {
+        try {
+            this.connection = DatabaseConnection.connect();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        this.databaseApplicationGateway = new DatabaseApplicationGateway(connection);
+        this.applicationDataAccessObject = new DBApplicationDataAccessObject(databaseApplicationGateway);
+
         cardPanel.setLayout(cardLayout);
+    }
+
+    public AppBuilder addSubmitApplicationView() {
+        submitViewModel = new SubmitViewModel();
+        submitView = new SubmitView(submitViewModel);
+        cardPanel.add(submitView, submitView.getViewName());
+        return this;
     }
 
     public AppBuilder addManageApplicationView() {
@@ -86,6 +123,18 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    //for use case
+    public AppBuilder addSubmitApplicationUseCase() {
+        final SubmitOutputBoundary submitOutputBoundary =
+                new SubmitPresenter(viewManagerModel, submitViewModel, browseFilterViewModel);
+        final SubmitInputBoundary submitInputBoundary =
+                new SubmitInteractor(userDataAccessObject, applicationDataAccessObject, submitOutputBoundary);
+
+        SubmitController submitController = new SubmitController(submitInputBoundary);
+        submitView.setSubmitController(submitController);
         return this;
     }
 
