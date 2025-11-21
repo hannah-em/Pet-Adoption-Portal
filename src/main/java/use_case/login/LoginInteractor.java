@@ -1,5 +1,6 @@
 package use_case.login;
 
+import entity.Administrator;
 import entity.User;
 
 /**
@@ -33,7 +34,14 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(username);
 
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName());
+                final String role;
+                if (user instanceof Administrator) {
+                    role = "administrator";
+                } else {
+                    role = "visitor";
+                }
+
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), role);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }
@@ -44,3 +52,4 @@ public class LoginInteractor implements LoginInputBoundary {
         loginPresenter.switchToSignupView();
     }
 }
+
