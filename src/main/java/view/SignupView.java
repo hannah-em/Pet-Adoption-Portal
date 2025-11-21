@@ -27,7 +27,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private SignupController signupController = null;
 
-    private final JButton signUp;
     private final JButton cancel;
     private final JButton toLogin;
 
@@ -56,30 +55,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         final JPanel buttons = new JPanel();
         toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
         buttons.add(toLogin);
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
-        buttons.add(signUp);
         cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
-
-        signUp.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(signUp)) {
-                            final SignupState currentState = signupViewModel.getState(); //取出用户输入的所有注册信息
-
-                            signupController.execute(
-                                    currentState.getUserType(),
-                                    currentState.getFirstname(),
-                                    currentState.getLastname(),
-                                    currentState.getUsername(),
-                                    currentState.getPassword(),
-                                    currentState.getRepeatPassword()
-                            );
-                        }
-                    }
-                }
-        );
 
         toLogin.addActionListener(
                 new ActionListener() {
@@ -115,7 +92,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
             SignupState currentState = signupViewModel.getState();
             currentState.setUserType("visitor");
             signupViewModel.setState(currentState);
-            JOptionPane.showMessageDialog(this, "You are signing up as a Visitor.");
+            signupController.execute(
+                    currentState.getUserType(),
+                    currentState.getFirstname(),
+                    currentState.getLastname(),
+                    currentState.getUsername(),
+                    currentState.getPassword(),
+                    currentState.getRepeatPassword()
+            );
         });
 
         // ===== Admin Signup Button =====
@@ -125,7 +109,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 SignupState currentState = signupViewModel.getState();
                 currentState.setUserType("administrator");
                 signupViewModel.setState(currentState);
-                JOptionPane.showMessageDialog(this, "Admin key verified. You are signing up as Administrator.");
+                signupController.execute(
+                        currentState.getUserType(),
+                        currentState.getFirstname(),
+                        currentState.getLastname(),
+                        currentState.getUsername(),
+                        currentState.getPassword(),
+                        currentState.getRepeatPassword()
+                );
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid admin key! Please try again or sign up as a visitor.");
             }

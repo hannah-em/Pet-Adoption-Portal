@@ -2,7 +2,11 @@ package app;
 
 import data_access.*;
 import interface_adapter.browse_filter.*;
+import interface_adapter.view_pet_details.ViewPetDetailsController;
+import interface_adapter.view_pet_details.ViewPetDetailsPresenter;
+import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
 import use_case.browse_filter.*;
+import use_case.view_pet_details.ViewPetDetailsInteractor;
 import view.BrowseFilterView;
 
 import java.sql.Connection;
@@ -56,6 +60,11 @@ public class MainBrowseFilter {
         BrowseFilterInteractor interactor = new BrowseFilterInteractor(dbGateway, presenter);
         BrowseFilterController controller = new BrowseFilterController(interactor);
 
-        new BrowseFilterView(controller, vm);
+        ViewPetDetailsViewModel detailsViewModel = new ViewPetDetailsViewModel();
+        ViewPetDetailsPresenter detailsPresenter = new ViewPetDetailsPresenter(detailsViewModel);
+        ViewPetDetailsInteractor detailsInteractor = new ViewPetDetailsInteractor(dbGateway, detailsPresenter);
+        ViewPetDetailsController detailsController = new ViewPetDetailsController(detailsInteractor);
+
+        new BrowseFilterView(controller, vm, detailsController, detailsViewModel);
     }
 }
