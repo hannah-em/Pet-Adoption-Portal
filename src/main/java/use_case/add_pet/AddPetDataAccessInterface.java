@@ -16,4 +16,5 @@ public interface AddPetDataAccessInterface {
     void add(Pet pet);
 
     String generateId(String type);
+
 }
