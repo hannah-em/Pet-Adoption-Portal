@@ -1,17 +1,32 @@
 package interface_adapter.manage_application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ManageApplicationState {
 
-    private final List<ManageApplicationCardState> cards = new ArrayList<>();
+    private String selectedApplicationId;
+    private boolean isLoading = false;
+    private String errorMessage;
 
-    public List<ManageApplicationCardState> getCards() {
-        return cards;
+    public String getSelectedApplicationId() {
+        return selectedApplicationId;
     }
 
-    public void addCard(ManageApplicationCardState card) {
-        cards.add(card);
+    public void setSelectedApplicationId(String selectedApplicationId) {
+        this.selectedApplicationId = selectedApplicationId;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

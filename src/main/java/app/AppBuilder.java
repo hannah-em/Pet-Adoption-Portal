@@ -18,6 +18,7 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+//import use_case.login.LoginInputBoundary; it wasn't working, did login not have input boundary?
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -48,8 +49,6 @@ public class AppBuilder {
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
-    private ManageApplicationView manageApplicationView;
-    private ManageApplicationViewModel manageApplicationViewModel;
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -59,13 +58,6 @@ public class AppBuilder {
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
-    }
-
-    public AppBuilder addManageApplicationView() {
-        manageApplicationViewModel = new ManageApplicationViewModel();
-        manageApplicationView = new ManageApplicationView(manageApplicationViewModel);
-        cardPanel.add(manageApplicationView, manageApplicationView.getViewName());
-        return this;
     }
 
     public AppBuilder addSignupView() {

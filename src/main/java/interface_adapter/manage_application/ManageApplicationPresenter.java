@@ -1,50 +1,56 @@
-//package interface_adapter.manage_application;
-//
-//import interface_adapter.ViewManagerModel;
-//import use_case.manage_application.ManageApplicationOutputBoundary;
-//
-//public class ManageApplicationPresenter implements ManageApplicationOutputBoundary {
-//
-//
-//    private final ManageApplicationViewModel manageApplicationViewModel;
-//    private final ViewManagerModel viewManagerModel;
-//
-//    public ManageApplicationPresenter() {
-//
-//    }
-//
-//    @Override
-//    public void prepareSuccessView(ManageApplicationViewModel manageApplicationViewModel) {
-//
-//
-//
-//}
 package interface_adapter.manage_application;
 
 import use_case.manage_application.ManageApplicationOutputBoundary;
 import use_case.manage_application.ManageApplicationOutputData;
+import entity.Application;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ManageApplicationPresenter implements ManageApplicationOutputBoundary {
 
-    private final ManageApplicationViewModel viewModel;
+    private final ManageApplicationViewModel view_model;
 
-    public ManageApplicationPresenter(ManageApplicationViewModel viewModel) {
-        this.viewModel = viewModel;
+    public ManageApplicationPresenter(ManageApplicationViewModel view_model) {
+        this.view_model = view_model;
     }
 
     @Override
-    public void presentApplications(ManageApplicationOutputData outputData) {
+    public void present(ManageApplicationOutputData outputData) {
 
-        List<ManageApplicationCardState> cardStates = new ArrayList<>();
+        // Convert entity list → card list
+        List<ApplicationCardViewModel> cards =
+                outputData.getApplications().stream()
+                        .map(application -> new ApplicationCardViewModel(
+                                application.getApplicationId(),
+                                application.getFirstName(), application.getLastName(),
+                                application.getPetId()
+                        ))
+                        .collect(Collectors.toList());
 
-        for (ManageApplicationOutputData.ApplicationData d : outputData.getApps()) {
-            cardStates.add(new ManageApplicationCardState(d.id, d.title, d.status, d.subtitle));
-        }
+        view_model.setCards(cards);
+    }
 
-        ManageApplicationState state = new ManageApplicationState();
-        viewModel.setState(state);
+    // Called when user selects a card
+    public void presentDetails(Application application) {
+
+        ApplicationDetailViewModel detail = new ApplicationDetailViewModel(
+                application.getApplicationId(),
+                application.getFirstName(),
+                application.getLastName(),
+                application.getPetId(),
+                application.getEmail(),
+                application.getPhoneNumber(),
+                application.getOccupation(),
+                application.getAge(),
+                application.getAvailability(),
+                application.getReason(),
+                application.getHomeEnvironment(),
+                application.getPreviousExperience()
+        );
+
+        view_model.setSelected(detail);
+
+        view_model.getState().setSelectedApplicationId(application.getApplicationId());
     }
 }
