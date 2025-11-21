@@ -16,7 +16,7 @@ public class ViewPetDetailsInteractor implements ViewPetDetailsInputBoundary {
 
     @Override
     public void execute(ViewPetDetailsInputData inputData) {
-        Pet pet = petGateway.fetchPetById(inputData.getPetId());
+       Pet pet = petGateway.fetchPetById(inputData.getPetId());
 
         ViewPetDetailsOutputData outputData = new ViewPetDetailsOutputData(pet);
         presenter.present(outputData);

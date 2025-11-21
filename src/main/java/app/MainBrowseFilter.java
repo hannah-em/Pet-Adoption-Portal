@@ -46,7 +46,7 @@ public class MainBrowseFilter {
                 totalImported += pets.size();
                 System.out.println("   → " + pets.size() + " added.");
             }
-
+            dbGateway.reloadAllPets();
             System.out.println("🐾 Imported " + totalImported + " total pets!");
         }
 

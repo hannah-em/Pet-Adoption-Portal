@@ -126,5 +126,8 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
     public Map<String, Pet> getPetMap() {
         return petMap;
     }
+    public void reloadAllPets() {
+        loadAllPetsIntoMap();
+    }
 }
 
