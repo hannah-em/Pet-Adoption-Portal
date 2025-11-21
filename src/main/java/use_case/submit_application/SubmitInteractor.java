@@ -10,8 +10,7 @@ public class SubmitInteractor implements SubmitInputBoundary {
 
     public SubmitInteractor(SubmitUserDataAccessInterface userDataAccessInterface,
                             SubmitApplicationDataAccessInterface applicationDataAccessInterface,
-                            SubmitOutputBoundary submitOutputBoundary,
-                            Application application) {
+                            SubmitOutputBoundary submitOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
         this.applicationDataAccessObject = applicationDataAccessInterface;
         this.submitPresenter = submitOutputBoundary;
@@ -19,6 +18,7 @@ public class SubmitInteractor implements SubmitInputBoundary {
 
     @Override
     public void execute(SubmitInputData submitInputData) {
+        //incomplete form
         if ("".equals(submitInputData.getUsername())||
                 "".equals(submitInputData.getFirstname())||
                 "".equals(submitInputData.getLastname())||
@@ -33,18 +33,33 @@ public class SubmitInteractor implements SubmitInputBoundary {
                 "".equals(submitInputData.getAvailability())) {
             submitPresenter.prepareFailView("Some required fields are missing");
         }
+        //notify typo in username (everyone should have a username and personal account in this stage)
         else if (! userDataAccessObject.existsByName(submitInputData.getUsername())){
             submitPresenter.prepareFailView("Username not found");
         }
         else {
             final Visitor visitor = (Visitor)userDataAccessObject.get(submitInputData.getUsername());
-            final Application application = new Application(visitor, submitInputData.getPetId(),
-                    submitInputData.getReason(), submitInputData.getHomeEvi(),
+            //store or update visitor additional info in database for future use, like
+            //upgrading the submit view: when user who applied before and had the information in database,
+            // we can automatically fill in the blanks of application form and show to visitor
+            visitor.setFirstName(submitInputData.getFirstname());
+            visitor.setLastName(submitInputData.getLastname());
+            visitor.setAge(submitInputData.getAge());
+            visitor.setOccupation(submitInputData.getOccupation());
+            visitor.setAddress(submitInputData.getAddress());
+            visitor.setHomeEvi(submitInputData.getHomeEvi());
+            visitor.setEmail(submitInputData.getEmail());
+            visitor.setTel(submitInputData.getTel());
+            //create an application and save it into database
+            final Application application = new Application(submitInputData.getPetId(),
+                    visitor.getFirstName(), visitor.getLastName(), visitor.getEmail(), visitor.getTel(),
+                    visitor.getAge(), visitor.getOccupation(), submitInputData.getReason(), visitor.getHomeEvi(),
                     submitInputData.getAvailability(), submitInputData.getPrevExp());
             applicationDataAccessObject.save(application);
+            //notify user applying successfully
             submitPresenter.prepareSuccessView(
                     "Your application has been successfully submitted. " +
-                            "We will review it and contact you shortly.");
+                            "We will review it and contact you shortly. Thank you!");
         }
     }
 
