@@ -10,5 +10,5 @@ public interface ManageApplicationOutputBoundary {
      * Prepares the success view for the Manage Application Use Case
      * @param outputData the output data
      */
-    void prepareSuccessView(ManageApplicationOutputData outputData);
+    void presentApplications(ManageApplicationOutputData outputData);
 }

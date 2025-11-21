@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.browse_filter.BrowseFilterController;
+import interface_adapter.browse_filter.BrowseFilterState;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
 
 import javax.swing.*;
@@ -81,17 +82,20 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
         clearButton.addActionListener(e -> {
             speciesField.setText("");
             genderField.setText("");
-            controller.execute("", ""); // reload all
+//            controller.execute("", ""); // reload all
+
+            BrowseFilterState state = viewModel.getState();
+            state.setPets(List.of());
+            viewModel.firePropertyChange("pets");
         });
 
         setVisible(true);
     }
 
-    // 🔥 Whenever the presenter updates the ViewModel, this gets called
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("pets".equals(evt.getPropertyName())) {
-            updateTable(viewModel.getPets());
+            updateTable(viewModel.getState().getPets());
         }
     }
 
@@ -108,3 +112,4 @@ public class BrowseFilterView extends JFrame implements PropertyChangeListener {
         }
     }
 }
+
