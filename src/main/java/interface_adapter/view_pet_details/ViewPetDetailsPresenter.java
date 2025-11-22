@@ -15,21 +15,21 @@ public class ViewPetDetailsPresenter implements ViewPetDetailsOutputBoundary {
     @Override
     public void present(ViewPetDetailsOutputData outputData) {
         Pet pet = outputData.getPet();
+        ViewPetDetailsState state = new ViewPetDetailsState();
 
         if (pet == null) {
-            viewModel.setErrorMessage("Pet details not found.");
-            viewModel.firePropertyChange();
+            state.setErrorMessage("Pet details not found.");
             return;
+        } else {
+            state.setPetId(pet.getId());
+            state.setPetName(pet.getName());
+            state.setPetType(pet.getType());
+            state.setPetBreed(pet.getBreed());
+            state.setPetAge(pet.getAge());
+            state.setPetGender(pet.getGender());
+            state.setPetSize(pet.getSize());
+            state.setPetContact(pet.getContact());
         }
-
-        viewModel.setPetName(pet.getName());
-        viewModel.setPetType(pet.getType());
-        viewModel.setPetBreed(pet.getBreed());
-        viewModel.setPetAge(pet.getAge());
-        viewModel.setPetGender(pet.getGender());
-        viewModel.setPetSize(pet.getSize());
-        viewModel.setPetContact(pet.getContact());
-
-        viewModel.firePropertyChange();
+        viewModel.setState(state);
     }
 }
