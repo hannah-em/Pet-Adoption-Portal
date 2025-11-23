@@ -38,7 +38,7 @@ public class InMemoryPetDataAccessObject implements AddPetDataAccessInterface, D
 
     @Override
     public void add(Pet pet) {
-
+        pets.put(pet.getId(), pet);
     }
     @Override
     public String generateId(String type) {
@@ -67,8 +67,5 @@ public class InMemoryPetDataAccessObject implements AddPetDataAccessInterface, D
         return pets.get(id);
     }
 
-    public void savePet(Pet pet) {
-        pets.put(pet.getName(), pet);
-    }
 }
 

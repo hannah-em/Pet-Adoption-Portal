@@ -128,7 +128,34 @@ public class SQLitePetDataAccessObject implements AddPetDataAccessInterface, Del
 
     @Override
     public boolean existsPet(List<String> petData) {
-        return false;
+        if (petData == null || petData.size() < 6) {
+            return false;
+        }
+
+        String sql = """
+        SELECT COUNT(*) FROM pets
+        WHERE name = ? AND gender = ? AND age = ?
+          AND type = ? AND size = ? AND breed = ?
+        """;
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, petData.get(0)); // name
+            stmt.setString(2, petData.get(1)); // gender
+            stmt.setString(3, petData.get(2)); // age
+            stmt.setString(4, petData.get(3)); // type
+            stmt.setString(5, petData.get(4)); // size
+            stmt.setString(6, petData.get(5)); // breed
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            return rs.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking pet existence", e);
+        }
     }
 
     @Override
