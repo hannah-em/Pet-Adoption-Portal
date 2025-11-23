@@ -22,6 +22,9 @@ public class DeletePetInteractor implements DeletePetInputBoundary{
             Pet pet = petGallery.getPet(petId);
 
             DeletePetOutputData petData = new DeletePetOutputData(
+                    pet.getId(),
+                    pet.getName(),
+                    pet.getType(),
                     "Pet ID: " + pet.getId() + "\n" +
                             "Name: " + pet.getName() + "\n" +
                             "Type: " + pet.getType(),
@@ -29,16 +32,17 @@ public class DeletePetInteractor implements DeletePetInputBoundary{
             );
 
             presenter.preparePetView(petData);
-            presenter.prepareWarningView("Are you sure you want to delete this pet?");
+            presenter.prepareWarningView("Are you sure you want to Delete this Pet?");
 
             petGallery.deletePet(petId);
 
             presenter.prepareSuccessView(
-                    new DeletePetOutputData("Pet deleted successfully!", true)
+                    new DeletePetOutputData(pet.getId(), pet.getName(), pet.getType(),
+                            "Pet deleted successfully!", true)
             );
         }
         else {
-            presenter.prepareFailureView("Pet does not exist.");
+            presenter.prepareFailureView("Pet Does not Exist.");
         }
     }
 
