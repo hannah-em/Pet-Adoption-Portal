@@ -27,15 +27,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private SignupController signupController = null;
 
-    private final JButton cancel;
     private final JButton toLogin;
 
-    private final JButton visitorSignupButton = new JButton("Sign up as Visitor");
-    private final JButton adminSignupButton = new JButton("Sign up as Admin");
+    private final JButton visitorSignupButton = new JButton("Signup as Visitor");
+    private final JButton adminSignupButton = new JButton("Signup as Admin");
     private final JTextField adminKeyField = new JTextField(15);
 
     public SignupView(SignupViewModel signupViewModel) {
-        this.signupViewModel = signupViewModel; //其实是ViewModel<SignupState>所以get state会得到signup state
+        this.signupViewModel = signupViewModel;
         signupViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
@@ -52,11 +51,10 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
 
+
         final JPanel buttons = new JPanel();
         toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
         buttons.add(toLogin);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
 
         toLogin.addActionListener(
                 new ActionListener() {
@@ -66,7 +64,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
-        cancel.addActionListener(this);
 
         addFirstnameListener();
         addLastnameListener();
@@ -243,9 +240,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     }
 
     @Override
-    public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
-    }
+    public void actionPerformed(ActionEvent evt) {}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

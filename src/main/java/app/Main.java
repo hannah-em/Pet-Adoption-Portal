@@ -19,6 +19,7 @@ public class Main {
                 .addSubmitApplicationUseCase()
                 .addBrowseFilterUseCase()
                 .addHomeView()
+                .addLogoutUseCase()
                 .build();
 
         application.pack();
