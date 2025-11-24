@@ -7,4 +7,6 @@ public interface SubmitUserDataAccessInterface {
     boolean existsByName(String username);
 
     User get(String username);
+
+    String getCurrentUsername();
 }

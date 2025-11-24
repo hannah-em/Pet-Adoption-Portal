@@ -2,6 +2,7 @@ package data_access;
 
 import entity.User;
 import entity.UserFactory;
+import entity.Visitor;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
@@ -22,7 +23,8 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                                                  LogoutUserDataAccessInterface,
                                                  SubmitUserDataAccessInterface {
 
-    private static final String HEADER = "username,password";
+    private static final String HEADER = "username,password,usertype,firstName,lastName," +
+            "address,homeEvi,occupation,email,tel,age";
 
     private final File csvFile;
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -41,6 +43,15 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
         csvFile = new File(csvPath);
         headers.put("username", 0);
         headers.put("password", 1);
+        headers.put("usertype", 2);
+        headers.put("firstName", 3);
+        headers.put("lastName", 4);
+        headers.put("address", 5);
+        headers.put("homeEvi", 6);
+        headers.put("occupation", 7);
+        headers.put("email", 8);
+        headers.put("tel", 9);
+        headers.put("age", 10);
 
         if (csvFile.length() == 0) {
             save();
@@ -59,7 +70,22 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
                     final String[] col = row.split(",");
                     final String username = String.valueOf(col[headers.get("username")]);
                     final String password = String.valueOf(col[headers.get("password")]);
-                    final User user = userFactory.create("visitor", username, password);
+                    final String usertype = String.valueOf(col[headers.get("usertype")]);
+
+                    final User user = userFactory.create(usertype, username, password);
+
+                    if (user instanceof Visitor) {
+                        Visitor visitor = (Visitor) user;
+                        visitor.setFirstName(col[headers.get("firstName")]);
+                        visitor.setLastName(col[headers.get("lastName")]);
+                        visitor.setAddress(col[headers.get("address")]);
+                        visitor.setHomeEvi(col[headers.get("homeEvi")]);
+                        visitor.setOccupation(col[headers.get("occupation")]);
+                        visitor.setEmail(col[headers.get("email")]);
+                        visitor.setTel(col[headers.get("tel")]);
+                        visitor.setAge(col[headers.get("age")]);
+                    }
+
                     accounts.put(username, user);
                 }
             }
@@ -77,9 +103,28 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
             writer.newLine();
 
             for (User user : accounts.values()) {
-                final String line = String.format("%s,%s",
-                        user.getName(), user.getPassword());
-                writer.write(line);
+                if (user instanceof Visitor) {
+                    Visitor visitor = (Visitor) user;
+                    writer.write(String.join(",",
+                            visitor.getName(),
+                            visitor.getPassword(),
+                            visitor.getUserType(),
+                            visitor.getFirstName(),
+                            visitor.getLastName(),
+                            visitor.getAddress(),
+                            visitor.getHomeEvi(),
+                            visitor.getOccupation(),
+                            visitor.getEmail(),
+                            visitor.getTel(),
+                            visitor.getAge()
+                    ));
+                }
+                else {writer.write(String.join(",",
+                        user.getName(),
+                        user.getPassword(),
+                        user.getUserType(),
+                        "","","","","","","",""
+                ));}
                 writer.newLine();
             }
 

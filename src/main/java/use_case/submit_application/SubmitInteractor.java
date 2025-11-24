@@ -37,6 +37,11 @@ public class SubmitInteractor implements SubmitInputBoundary {
         else if (! userDataAccessObject.existsByName(submitInputData.getUsername())){
             submitPresenter.prepareFailView("Username not found");
         }
+        //prevent using others' account info to make application
+        //notify that the username entered does not match the current logged-in account
+        else if (! submitInputData.getUsername().equals(userDataAccessObject.getCurrentUsername())){
+            submitPresenter.prepareFailView("Username does not match");
+        }
         else {
             final Visitor visitor = (Visitor)userDataAccessObject.get(submitInputData.getUsername());
             //store or update visitor additional info in database for future use, like
