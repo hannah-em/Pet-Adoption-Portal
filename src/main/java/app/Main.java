@@ -9,11 +9,16 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()
+                .addViewPetDetails()
+                .addViewPetDetailsUseCase()
+                .addBrowseFilterView()
                 .addSubmitApplicationView()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()
                 .addSubmitApplicationUseCase()
+                .addBrowseFilterUseCase()
+                .addHomeView()
                 .addLogoutUseCase()
                 .build();
 
@@ -22,3 +27,4 @@ public class Main {
         application.setVisible(true);
     }
 }
+
