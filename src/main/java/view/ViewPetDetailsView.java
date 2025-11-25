@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.submit_application.SubmitState;
 import interface_adapter.submit_application.SubmitViewModel;
+import interface_adapter.view_pet_details.ViewPetDetailsController;
 import interface_adapter.view_pet_details.ViewPetDetailsState;
 import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
 
@@ -14,6 +15,8 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
 
     private final ViewPetDetailsViewModel viewModel;
     private final SubmitViewModel submitViewModel = new SubmitViewModel();
+    private final String viewName = "view pet details";
+    private ViewPetDetailsController viewPetDetailsController;
 
     private final JLabel nameLabel = new JLabel();
     private final JLabel typeLabel = new JLabel();
@@ -23,6 +26,10 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
     private final JLabel sizeLabel = new JLabel();
     private final JLabel contactLabel = new JLabel();
     private final JButton adoptButton = new JButton("I want to adopt this pet");
+
+    public void setViewPetDetailsController(ViewPetDetailsController controller) {
+        this.viewPetDetailsController = controller;
+    }
 
     public ViewPetDetailsView(ViewPetDetailsViewModel viewModel) {
         this.viewModel = viewModel;
@@ -47,7 +54,8 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
             currentState.setPetId(viewModel.getState().getPetId());
             submitViewModel.setState(currentState);
 
-            System.out.println("Passing petId to submit form: " + viewModel.getState().getPetId());
+            viewPetDetailsController.switchToApplicationView();
+
             dispose();
         });
 
@@ -72,5 +80,9 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
                 contactLabel.setText("Contact: " + state.getPetContact());
             }
         }
+    }
+
+    public String getViewName() {
+        return viewName;
     }
 }

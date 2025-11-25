@@ -11,7 +11,7 @@ class SignupInteractorTest {
 
     @Test
     void successTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "password");
+        SignupInputData inputData = new SignupInputData("visitor", "Paul", "Smith", "paulsmith","password", "password");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a successPresenter that tests whether the test case is as we expect.
@@ -19,7 +19,7 @@ class SignupInteractorTest {
             @Override
             public void prepareSuccessView(SignupOutputData user) {
                 // 2 things to check: the output data is correct, and the user has been created in the DAO.
-                assertEquals("Paul", user.getUsername());
+                assertEquals("paulsmith", user.getUsername());
                 assertTrue(userRepository.existsByName("Paul"));
             }
 
@@ -40,7 +40,7 @@ class SignupInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
+        SignupInputData inputData = new SignupInputData("visitor", "Paul", "Smith","paulsmith","password", "wrong");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a presenter that tests whether the test case is as we expect.
@@ -68,7 +68,7 @@ class SignupInteractorTest {
 
     @Test
     void failureUserExistsTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong");
+        SignupInputData inputData = new SignupInputData("visitor","Paul", "Smith", "Paul" "password", "wrong");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist

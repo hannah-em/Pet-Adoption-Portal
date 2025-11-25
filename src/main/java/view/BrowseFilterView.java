@@ -20,6 +20,8 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     private ViewPetDetailsController detailsController;
     private final ViewPetDetailsViewModel detailsViewModel;
+    private ViewPetDetailsView viewPetDetailsView;
+
 
     private final JTextField speciesField = new JTextField(20);
     private final JTextField genderField = new JTextField(20);
@@ -31,10 +33,15 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
     );
     private final JTable petTable = new JTable(tableModel);
 
-    public BrowseFilterView(BrowseFilterViewModel viewModel,
-                            ViewPetDetailsViewModel detailsViewModel) {
+    public BrowseFilterView(BrowseFilterController controller,
+                            BrowseFilterViewModel viewModel,
+                            ViewPetDetailsController detailsController,
+                            ViewPetDetailsViewModel detailsViewModel
+                            ) {
 
+        this.controller = controller;
         this.viewModel = viewModel;
+        this.detailsController = detailsController;
         this.detailsViewModel = detailsViewModel;
 
         viewModel.addPropertyChangeListener(this);
@@ -144,6 +151,9 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     public void setDetailsController(ViewPetDetailsController detailsController) {
         this.detailsController = detailsController;
+    }
+    public void setViewPetDetailsView(ViewPetDetailsView viewPetDetailsView) {
+        this.viewPetDetailsView = viewPetDetailsView;
     }
 }
 

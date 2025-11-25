@@ -21,4 +21,8 @@ public class ViewPetDetailsInteractor implements ViewPetDetailsInputBoundary {
         ViewPetDetailsOutputData outputData = new ViewPetDetailsOutputData(pet);
         presenter.present(outputData);
     }
+    @Override
+    public void switchToApplicationView() {
+        presenter.switchToApplicationView();
+    }
 }
