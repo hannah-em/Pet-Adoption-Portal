@@ -23,4 +23,8 @@ public class ManageApplicationViewModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
+
+    public String getViewName() {
+        return "Manage Application";
+    }
 }

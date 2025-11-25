@@ -1,6 +1,7 @@
 package interface_adapter.submit_application;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.browse_filter.BrowseFilterViewModel;
 import use_case.submit_application.SubmitOutputBoundary;
 
 public class SubmitPresenter implements SubmitOutputBoundary {
@@ -23,7 +24,7 @@ public class SubmitPresenter implements SubmitOutputBoundary {
         submitState.setSuccess(successMessage);
         submitViewModel.firePropertyChange();
         //On success, switch back to BrowserFilter view
-        viewManagerModel.setState(BrowseFilterViewModel.getViewName());
+        viewManagerModel.setState(browseFilterViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 
@@ -38,7 +39,7 @@ public class SubmitPresenter implements SubmitOutputBoundary {
     @Override
     public void switchToBrowserFilterView() {
         //for the cancel button
-        viewManagerModel.setState(BrowseFilterViewModel.getViewName());
+        viewManagerModel.setState(browseFilterViewModel.getViewName());
         viewManagerModel.firePropertyChange();
     }
 }

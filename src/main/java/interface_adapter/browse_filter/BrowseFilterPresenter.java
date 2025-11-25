@@ -17,12 +17,15 @@ public class BrowseFilterPresenter implements BrowseFilterOutputBoundary {
 
     @Override
     public void present(BrowseFilterOutputData outputData) {
-        List<Pet> pets = outputData.getPets();
-
-        List<String> petStrings = pets.stream()
-                .map(p -> p.getName() + " | " + p.getType() + " | " + p.getBreed() + " | " + p.getGender())
+        List<String> petStrings = outputData.getPets().stream()
+                .map(p -> p.getId() + " | " + p.getName() + " | " + p.getType() + " | " + p.getBreed() + " | " + p.getGender())
                 .collect(Collectors.toList());
 
-        viewModel.setPets(petStrings);
+        // ★ Access the state inside the ViewModel
+        BrowseFilterState state = viewModel.getState();
+        state.setPets(petStrings);
+
+        // ★ Notify the view that P E T S changed
+        viewModel.firePropertyChange("pets");
     }
 }
