@@ -1,22 +1,26 @@
 package interface_adapter.manage_application;
 
-import java.util.*;
+import entity.Application;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 public class ManageApplicationViewModel {
 
-    private List<ApplicationCardViewModel> cards;
-    private ApplicationDetailViewModel selected;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    private ManageApplicationState state = new ManageApplicationState();
+    private List<Application> applications;
 
-    public List<ApplicationCardViewModel> getCards() { return cards;}
+    public List<Application> getApplications() {
+        return applications;
+    }
 
-    public void setCards(List<ApplicationCardViewModel> cards) { this.cards = cards;}
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+        support.firePropertyChange("applications", null, applications);
+    }
 
-    public ApplicationDetailViewModel getSelected() {return selected;}
-
-    public void setSelected(ApplicationDetailViewModel selected) {this.selected = selected;}
-
-    public ManageApplicationState getState() {return state;}
-
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
 }
