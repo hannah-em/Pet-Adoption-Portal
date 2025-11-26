@@ -24,7 +24,6 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.submit_application.SubmitController;
-import interface_adapter.submit_application.SubmitPageController;
 import interface_adapter.submit_application.SubmitPresenter;
 import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
@@ -133,7 +132,7 @@ public class AppBuilder {
     public AppBuilder addBrowseFilterView() {
         browseFilterViewModel = new BrowseFilterViewModel();
         browseFilterView =
-                new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel);
+                new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel, viewManagerModel);
         cardPanel.add(browseFilterView, browseFilterView.getViewName());
         return this;
     }
@@ -180,8 +179,6 @@ public class AppBuilder {
         // Create page-opening controllers (no input required)
         BrowseFilterPageController browseFilterPageController =
                 new BrowseFilterPageController(viewManagerModel, browseFilterViewModel);
-        SubmitPageController submitPageController =
-                new SubmitPageController(viewManagerModel, submitViewModel);
         AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
         ManageApplicationsPageController manageApplicationsPageController =
                 new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
@@ -190,7 +187,6 @@ public class AppBuilder {
         homeView = new HomeView(
                 loggedInViewModel,
                 browseFilterPageController,
-                submitPageController,
                 addPetPageController,
                 manageApplicationsPageController
         );
