@@ -16,5 +16,9 @@ public class AddPetViewModel {
     public void addPropertyChangeListener(PropertyChangeListener l) {
         support.addPropertyChangeListener(l);
     }
+
+    public String getViewName() {
+        return "Add Pet";
+    }
 }
 

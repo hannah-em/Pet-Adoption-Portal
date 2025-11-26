@@ -130,7 +130,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
      * @param evt the ActionEvent to react to
      */
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
+        loginController.switchToSignupView();
     }
 
     @Override
@@ -142,6 +142,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private void setFields(LoginState state) {
         usernameInputField.setText(state.getUsername());
+        passwordInputField.setText(state.getPassword());
     }
 
     public String getViewName() {

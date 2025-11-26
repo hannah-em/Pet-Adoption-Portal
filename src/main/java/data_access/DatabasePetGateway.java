@@ -119,6 +119,16 @@ public class DatabasePetGateway implements PetAPIGatewayInterface {
             e.printStackTrace();
         }
     }
+    public int getPetCount() {
+        return petMap.size();
+    }
+
+    public Map<String, Pet> getPetMap() {
+        return petMap;
+    }
+    public void reloadAllPets() {
+        loadAllPetsIntoMap();
+    }
 }
 
 
