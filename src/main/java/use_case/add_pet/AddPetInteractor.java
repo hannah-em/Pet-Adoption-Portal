@@ -24,18 +24,8 @@ public class AddPetInteractor implements AddPetInputBoundary {
     @Override
     public void execute(AddPetInputData inputData) {
 
-        String generatedId = petRepo.generateId(inputData.getType());;
-        List<String> petData = new ArrayList<>();
-
-        petData.add(inputData.getName());
-        petData.add(inputData.getGender());
-        petData.add(inputData.getAge());
-        petData.add(inputData.getType());
-        petData.add(inputData.getSize());
-        petData.add(inputData.getBreed());
-
-        // -------- CHECK EMPTY FIELDS ----------
-        if (    inputData.getName().isEmpty() ||
+        // build the Pet attributes
+        if (inputData.getName().isEmpty() ||
                 inputData.getType().isEmpty() ||
                 inputData.getBreed().isEmpty() ||
                 inputData.getAge().isEmpty() ||
@@ -47,15 +37,26 @@ public class AddPetInteractor implements AddPetInputBoundary {
             return;
         }
 
-        // -------- CHECK DUPLICATE PET ID ----------
-        if (petRepo.existsPet(petData)){
+        // Generate a single ID from the repo
+        String petId = petRepo.generateId(inputData.getType());
+
+        List<String> attributes = List.of(
+                inputData.getName(),
+                inputData.getGender(),
+                inputData.getAge(),
+                inputData.getType(),
+                inputData.getSize(),
+                inputData.getBreed()
+        );
+
+        if (petRepo.existsPet(attributes)) {
             presenter.prepareFailView("A pet already exists.");
             return;
         }
 
-        // -------- CREATE PET --------
+        // Create Pet object
         Pet pet = petFactory.create(
-                generatedId,
+                petId,
                 inputData.getName(),
                 inputData.getType(),
                 inputData.getBreed(),
@@ -65,10 +66,14 @@ public class AddPetInteractor implements AddPetInputBoundary {
                 inputData.getContact()
         );
 
+        // Save
         petRepo.add(pet);
-        //might change to save later
 
-        presenter.prepareSuccessView(new AddPetOutputData("Pet added successfully!", true));
+        // Output
+        AddPetOutputData outputData =
+                new AddPetOutputData(petId, "Pet added successfully!", true);
+
+        presenter.prepareSuccessView(outputData);
     }
 }
 

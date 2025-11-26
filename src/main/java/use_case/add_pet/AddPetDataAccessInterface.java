@@ -16,4 +16,6 @@ public interface AddPetDataAccessInterface {
     void add(Pet pet);
 
     String generateId(String type);
+
+    boolean existsPet(String id);
 }
