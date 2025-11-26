@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterState;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
@@ -16,15 +17,18 @@ import java.util.List;
 public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     private BrowseFilterController controller;
-    private final BrowseFilterViewModel viewModel;
-
     private ViewPetDetailsController detailsController;
+
+    private final BrowseFilterViewModel viewModel;
     private final ViewPetDetailsViewModel detailsViewModel;
+    private final ViewManagerModel viewManagerModel;
 
     private final JTextField speciesField = new JTextField(20);
     private final JTextField genderField = new JTextField(20);
+
     private final JButton searchButton = new JButton("Search");
     private final JButton clearButton = new JButton("Clear Filters");
+    private final JButton backButton = new JButton("Back");
 
     private final DefaultTableModel tableModel = new DefaultTableModel(
             new String[]{"ID", "Name", "Type", "Breed", "Gender"}, 0
@@ -32,46 +36,45 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
     private final JTable petTable = new JTable(tableModel);
 
     public BrowseFilterView(BrowseFilterViewModel viewModel,
-                            ViewPetDetailsViewModel detailsViewModel) {
+                            ViewPetDetailsViewModel detailsViewModel,
+                            ViewManagerModel viewManagerModel) {
 
         this.viewModel = viewModel;
         this.detailsViewModel = detailsViewModel;
+        this.viewManagerModel = viewManagerModel;
 
         viewModel.addPropertyChangeListener(this);
 
-        // ========== Layout & Panels ==========
         setLayout(new BorderLayout());
 
+        // ===== FILTER PANEL =====
         JPanel filterPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Species label + field
         gbc.gridx = 0; gbc.gridy = 0;
         filterPanel.add(new JLabel("Species:"), gbc);
-
         gbc.gridx = 1;
         filterPanel.add(speciesField, gbc);
 
-        // Gender label + field
         gbc.gridx = 0; gbc.gridy = 1;
         filterPanel.add(new JLabel("Gender:"), gbc);
-
         gbc.gridx = 1;
         filterPanel.add(genderField, gbc);
 
-        // Buttons
+        // ===== BUTTONS =====
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(searchButton);
         buttonPanel.add(clearButton);
+        buttonPanel.add(backButton);
 
         filterPanel.add(buttonPanel, gbc);
 
-        // Table
+        // ===== TABLE =====
         JScrollPane scrollPane = new JScrollPane(petTable);
         petTable.setRowHeight(28);
 
@@ -80,11 +83,10 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
         petTable.getColumnModel().getColumn(0).setMaxWidth(0);
         petTable.getColumnModel().getColumn(0).setWidth(0);
 
-        // Add to main panel
         add(filterPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
-        // ========== Button Actions ==========
+        // ===== BUTTON LISTENERS =====
         searchButton.addActionListener(e -> {
             String species = speciesField.getText().trim();
             String gender = genderField.getText().trim();
@@ -99,12 +101,17 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
             viewModel.firePropertyChange("pets");
         });
 
-        // ========== Row Click Listener ==========
+        backButton.addActionListener(e -> {
+            viewManagerModel.setState("home");
+            viewManagerModel.firePropertyChange();
+        });
+
+        // ===== ROW CLICK LISTENER =====
         petTable.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 int row = petTable.getSelectedRow();
-                if (row != -1) {
+                if (row != -1 && detailsController != null) {
                     String petId = tableModel.getValueAt(row, 0).toString();
                     System.out.println("Clicked pet ID: " + petId);
 
@@ -124,12 +131,9 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     private void updateTable(List<String> pets) {
         tableModel.setRowCount(0);
-
         for (String line : pets) {
             String[] data = line.split("\\|");
-            for (int i = 0; i < data.length; i++) {
-                data[i] = data[i].trim();
-            }
+            for (int i = 0; i < data.length; i++) data[i] = data[i].trim();
             tableModel.addRow(data);
         }
     }
@@ -146,4 +150,5 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
         this.detailsController = detailsController;
     }
 }
+
 
