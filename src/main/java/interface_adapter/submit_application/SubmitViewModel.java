@@ -13,8 +13,7 @@ public class SubmitViewModel extends ViewModel<SubmitState> {
     public static final String ADDRESS_LABEL = "Enter your address";
     public static final String HOME_LABEL = "Describe your home environment";
     public static final String REASON_LABEL = "Reason(s) for wanting to adopt a pet";
-    public static final String EXP_LABEL = "Describe your previous experience keeping a pet or pets; " +
-            "if none, write None.";
+    public static final String EXP_LABEL = "Describe your previous experience keeping a pet or pets";
     public static final String AVAILABILITY_LABEL = "How much time can you spend with the pet?";
     public static final String EMAIL_LABEL = "Enter your email";
     public static final String TEL_LABEL = "Enter your phone number";
