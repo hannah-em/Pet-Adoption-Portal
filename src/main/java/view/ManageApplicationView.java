@@ -1,6 +1,9 @@
-package interface_adapter.manage_application;
+package view;
 
 import entity.Application;
+import interface_adapter.browse_filter.BrowseFilterController;
+import interface_adapter.manage_application.ManageApplicationController;
+import interface_adapter.manage_application.ManageApplicationViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,13 +13,12 @@ import java.util.List;
 
 public class ManageApplicationView extends JPanel implements PropertyChangeListener {
 
-    private final ManageApplicationController controller;
+    private ManageApplicationController controller;
     private final ManageApplicationViewModel viewModel;
 
     private final JPanel cardContainer;
 
-    public ManageApplicationView(ManageApplicationController controller,
-                                 ManageApplicationViewModel viewModel) {
+    public ManageApplicationView(ManageApplicationViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
 
@@ -86,4 +88,11 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
 
         return panel;
     }
+
+
+    public String getViewName() {
+        return "applications";
+    }
+
+    public void setApplicationController(ManageApplicationController controller) { this.controller = controller;}
 }

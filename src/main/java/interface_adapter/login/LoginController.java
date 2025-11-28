@@ -4,7 +4,7 @@ import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInputData;
 
 /**
- * The controller for the Login Use Case.
+ * The controller for the  Login Use Case.
  */
 public class LoginController {
 

@@ -13,6 +13,8 @@ public class Main {
                 .addViewPetDetailsUseCase()
                 .addBrowseFilterView()
                 .addSubmitApplicationView()
+                .addManageApplicationView()
+                .addManageApplicationUseCase()
                 .addSignupUseCase()
                 .addLoginUseCase()
                 .addChangePasswordUseCase()

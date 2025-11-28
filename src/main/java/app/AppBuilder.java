@@ -18,8 +18,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.manage_application.ManageApplicationViewModel;
-import interface_adapter.manage_application.ManageApplicationsPageController;
+import view.*;
+import interface_adapter.manage_application.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -30,6 +30,7 @@ import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
 import interface_adapter.view_pet_details.ViewPetDetailsPresenter;
 import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
+import use_case.manage_application.*;
 import use_case.browse_filter.BrowseFilterInputBoundary;
 import use_case.browse_filter.BrowseFilterInteractor;
 import use_case.browse_filter.BrowseFilterOutputBoundary;
@@ -102,6 +103,7 @@ public class AppBuilder {
     private AddPetViewModel addPetViewModel;
     private HomeViewModel homeViewModel;
     private HomeView homeView;
+
 
     public AppBuilder() {
         try {
@@ -211,6 +213,17 @@ public class AppBuilder {
         return this;
     }
 
+
+    public AppBuilder addManageApplicationUseCase() {
+        final ManageApplicationOutputBoundary manageApplicationOutputBoundary =
+                new ManageApplicationPresenter(manageApplicationViewModel);
+        final ManageApplicationInputBoundary manageApplicationInputBoundary =
+                new ManageApplicationInteractor(applicationDataAccessObject, manageApplicationOutputBoundary);
+
+        ManageApplicationController manageApplicationController = new ManageApplicationController(manageApplicationInputBoundary);
+        manageApplicationView.setApplicationController(manageApplicationController);
+        return this;
+    }
 
 
     public AppBuilder addBrowseFilterUseCase() {
