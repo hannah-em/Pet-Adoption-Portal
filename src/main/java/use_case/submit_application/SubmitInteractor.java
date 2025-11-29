@@ -18,7 +18,7 @@ public class SubmitInteractor implements SubmitInputBoundary {
 
     @Override
     public void execute(SubmitInputData submitInputData) {
-        //incomplete form
+        //notify incomplete form
         if ("".equals(submitInputData.getUsername())||
                 "".equals(submitInputData.getFirstname())||
                 "".equals(submitInputData.getLastname())||
@@ -31,7 +31,7 @@ public class SubmitInteractor implements SubmitInputBoundary {
                 "".equals(submitInputData.getReason())||
                 "".equals(submitInputData.getPrevExp())||
                 "".equals(submitInputData.getAvailability())) {
-            submitPresenter.prepareFailView("Some required fields are missing");
+            submitPresenter.prepareFailView("Some required fields are missing.");
         }
         //notify typo in username (everyone should have a username and personal account in this stage)
         else if (! userDataAccessObject.existsByName(submitInputData.getUsername())){
@@ -40,11 +40,11 @@ public class SubmitInteractor implements SubmitInputBoundary {
         //prevent using others' account info to make application
         //notify that the username entered does not match the current logged-in account
         else if (! submitInputData.getUsername().equals(userDataAccessObject.getCurrentUsername())){
-            submitPresenter.prepareFailView("Username does not match");
+            submitPresenter.prepareFailView("Username does not match.");
         }
         else {
             final Visitor visitor = (Visitor)userDataAccessObject.get(submitInputData.getUsername());
-            //store or update visitor additional info in database for future use, like
+            //store or update visitor additional info for future use, like
             //upgrading the submit view: when user who applied before and had the information in database,
             // we can automatically fill in the blanks of application form and show to visitor
             visitor.setFirstName(submitInputData.getFirstname());
