@@ -95,4 +95,8 @@ public class Visitor extends User{
         this.tel = tel;
     }
 
+    public String getUserType() {
+        return "visitor";
+    }
+
 }
