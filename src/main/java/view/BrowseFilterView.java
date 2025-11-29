@@ -20,6 +20,7 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     private ViewPetDetailsController detailsController;
     private final ViewPetDetailsViewModel detailsViewModel;
+    private ViewPetDetailsView viewPetDetailsView;
 
     private final JTextField speciesField = new JTextField(20);
     private final JTextField genderField = new JTextField(20);
@@ -106,10 +107,9 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
                 int row = petTable.getSelectedRow();
                 if (row != -1) {
                     String petId = tableModel.getValueAt(row, 0).toString();
-                    System.out.println("Clicked pet ID: " + petId);
-
-                    new ViewPetDetailsView(detailsViewModel);
+                    
                     detailsController.execute(petId);
+                    viewPetDetailsView.setVisible(true);
                 }
             }
         });
@@ -144,6 +144,9 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
 
     public void setDetailsController(ViewPetDetailsController detailsController) {
         this.detailsController = detailsController;
+    }
+    public void setViewPetDetailsView(ViewPetDetailsView viewPetDetailsView) {
+        this.viewPetDetailsView = viewPetDetailsView;
     }
 }
 
