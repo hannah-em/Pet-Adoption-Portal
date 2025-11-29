@@ -18,6 +18,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.manage_application.ManageApplicationView;
 import interface_adapter.manage_application.ManageApplicationViewModel;
 import interface_adapter.manage_application.ManageApplicationsPageController;
 import interface_adapter.signup.SignupController;
