@@ -86,4 +86,9 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
 
         return panel;
     }
+
+    public String getViewName() {
+        return "Manage Application";
+    }
 }
+
