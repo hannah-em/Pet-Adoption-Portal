@@ -1,6 +1,5 @@
 package view;
 
-import interface_adapter.signup.SignupState;
 import interface_adapter.submit_application.SubmitController;
 import interface_adapter.submit_application.SubmitState;
 import interface_adapter.submit_application.SubmitViewModel;
@@ -15,21 +14,21 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class SubmitView extends JPanel implements ActionListener, PropertyChangeListener {
-    final String viewName = "Submit";
+    final String viewName = "submit";
     private final SubmitViewModel submitViewModel;
 
     private final JTextField usernameInputField = new JTextField(15);
     private final JTextField firstnameInputField = new JTextField(15);
     private final JTextField lastnameInputField = new JTextField(15);
-    private final JTextField ageInputField = new JTextField(3);
+    private final JTextField ageInputField = new JTextField(15);
     private final JTextField occupationInputField = new JTextField(15);
-    private final JTextField addressInputField = new JTextField(100);
-    private final JTextField homeEviInputField = new JTextField(200);
-    private final JTextField telInputField = new JTextField(20);
-    private final JTextField emailInputField = new JTextField(30);
-    private final JTextField reasonInputField = new JTextField(200);
-    private final JTextField prevExpInputField = new JTextField(100);
-    private final JTextField availabilityInputField = new JTextField(100);
+    private final JTextField addressInputField = new JTextField(40);
+    private final JTextArea homeEviInputArea = new JTextArea(3, 20);
+    private final JTextField telInputField = new JTextField(15);
+    private final JTextField emailInputField = new JTextField(20);
+    private final JTextArea reasonInputArea = new JTextArea(3, 20);
+    private final JTextArea prevExpInputArea = new JTextArea(3, 20);
+    private final JTextArea availabilityInputArea = new JTextArea(3, 20);
     private SubmitController submitController = null;
 
     private final JButton submit;
@@ -61,23 +60,36 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
         final JPanel homeEviInfo = new JPanel();
         homeEviInfo.setLayout(new BoxLayout(homeEviInfo, BoxLayout.Y_AXIS));
+        homeEviInputArea.setLineWrap(true);
+        homeEviInputArea.setWrapStyleWord(true);
+        JScrollPane homeEviScroll = new JScrollPane(homeEviInputArea);
         homeEviInfo.add(new JLabel(SubmitViewModel.HOME_LABEL));
-        homeEviInfo.add(homeEviInputField);
+        homeEviInfo.add(homeEviScroll);
+
 
         final JPanel reasonInfo = new JPanel();
         reasonInfo.setLayout(new BoxLayout(reasonInfo, BoxLayout.Y_AXIS));
+        reasonInputArea.setLineWrap(true);
+        reasonInputArea.setWrapStyleWord(true);
+        JScrollPane reasonScroll = new JScrollPane(reasonInputArea);
         reasonInfo.add(new JLabel(SubmitViewModel.REASON_LABEL));
-        reasonInfo.add(reasonInputField);
+        reasonInfo.add(reasonScroll);
 
         final JPanel prevExpInfo = new JPanel();
         prevExpInfo.setLayout(new BoxLayout(prevExpInfo, BoxLayout.Y_AXIS));
+        prevExpInputArea.setLineWrap(true);
+        prevExpInputArea.setWrapStyleWord(true);
+        JScrollPane prevExpScroll = new JScrollPane(prevExpInputArea);
         prevExpInfo.add(new JLabel(SubmitViewModel.EXP_LABEL));
-        prevExpInfo.add(prevExpInputField);
+        prevExpInfo.add(prevExpScroll);
 
         final JPanel availabilityInfo = new JPanel();
         availabilityInfo.setLayout(new BoxLayout(availabilityInfo, BoxLayout.Y_AXIS));
+        availabilityInputArea.setLineWrap(true);
+        availabilityInputArea.setWrapStyleWord(true);
+        JScrollPane availabilityScroll = new JScrollPane(availabilityInputArea);
         prevExpInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
-        prevExpInfo.add(availabilityInputField);
+        prevExpInfo.add(availabilityScroll);
 
         final JPanel buttons = new JPanel();
         submit = new JButton(SubmitViewModel.SUBMIT_BUTTON_LABEL);
@@ -106,10 +118,6 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
                                     currentState.getPrevExp(),
                                     currentState.getAvailability()
                             );
-
-                            JOptionPane.showMessageDialog(SubmitView.this,
-                                    "Your application has been successfully submitted!");
-
                         }
                     }
                 }
@@ -143,9 +151,10 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         this.add(lastnameInfo);
         this.add(ageInfo);
         this.add(occupationInfo);
-        this.add(addressInfo);
         this.add(telInfo);
         this.add(emailInfo);
+        this.add(addressInfo);
+        this.add(homeEviInfo);
         this.add(reasonInfo);
         this.add(prevExpInfo);
         this.add(availabilityInfo);
@@ -267,11 +276,11 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void addHomeListener() {
-        homeEviInputField.getDocument().addDocumentListener(new DocumentListener() {
+        homeEviInputArea.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final SubmitState currentState = submitViewModel.getState();
-                currentState.setHomeEvi(homeEviInputField.getText());
+                currentState.setHomeEvi(homeEviInputArea.getText());
                 submitViewModel.setState(currentState);
             }
             @Override
@@ -324,11 +333,11 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void addReasonListener() {
-        reasonInputField.getDocument().addDocumentListener(new DocumentListener() {
+        reasonInputArea.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final SubmitState currentState = submitViewModel.getState();
-                currentState.setReason(reasonInputField.getText());
+                currentState.setReason(reasonInputArea.getText());
                 submitViewModel.setState(currentState);
             }
             @Override
@@ -343,11 +352,11 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void addExpListener() {
-        prevExpInputField.getDocument().addDocumentListener(new DocumentListener() {
+        prevExpInputArea.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final SubmitState currentState = submitViewModel.getState();
-                currentState.setPrevExp(prevExpInputField.getText());
+                currentState.setPrevExp(prevExpInputArea.getText());
                 submitViewModel.setState(currentState);
             }
             @Override
@@ -362,11 +371,11 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void addAvailabilityListener() {
-        availabilityInputField.getDocument().addDocumentListener(new DocumentListener() {
+        availabilityInputArea.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final SubmitState currentState = submitViewModel.getState();
-                currentState.setAvailability(availabilityInputField.getText());
+                currentState.setAvailability(availabilityInputArea.getText());
                 submitViewModel.setState(currentState);
             }
             @Override
@@ -388,6 +397,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //updating the error or success message in submit state
         final SubmitState state = (SubmitState) evt.getNewValue();
         if (state.getError() != null) {
             JOptionPane.showMessageDialog(this, state.getError());
@@ -403,5 +413,20 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
     public void setSubmitController(SubmitController controller) {
         this.submitController = controller;
+    }
+
+    public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            SubmitViewModel viewModel = new SubmitViewModel();
+
+            SubmitView submitView = new SubmitView(viewModel);
+
+            JFrame frame = new JFrame("Submit View Preview");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setContentPane(submitView);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }

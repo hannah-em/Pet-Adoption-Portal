@@ -1,53 +1,89 @@
 package app;
 
 import data_access.InMemoryPetDataAccessObject;
+import data_access.SQLitePetDataAccessObject;
 import entity.PetFactory;
-import interface_adapter.add_pet.AddPetController;
-import interface_adapter.add_pet.AddPetPresenter;
-import interface_adapter.add_pet.AddPetView;
-import interface_adapter.add_pet.AddPetViewModel;
-import use_case.add_pet.AddPetDataAccessInterface;
-import use_case.add_pet.AddPetInputBoundary;
-import use_case.add_pet.AddPetInteractor;
-import use_case.add_pet.AddPetOutputBoundary;
+
+// ADD
+import interface_adapter.add_pet.*;
+import use_case.add_pet.*;
+
+// DELETE
+import interface_adapter.delete_pet.*;
+import use_case.delete_pet.*;
 
 import javax.swing.*;
 
 public class AddPetAppBuilder {
 
     private AddPetView addPetView;
+    private DeletePetView deletePetView;
+
     private AddPetController addPetController;
+    private DeletePetController deletePetController;
+
+    // shared repo
+    //private InMemoryPetDataAccessObject petRepo = new InMemoryPetDataAccessObject();
+    private SQLitePetDataAccessObject petRepo = new SQLitePetDataAccessObject();
+
 
     public AddPetAppBuilder addAddPetView() {
         this.addPetView = new AddPetView();
         return this;
     }
 
+    public AddPetAppBuilder addDeletePetView() {
+        this.deletePetView = new DeletePetView();
+        return this;
+    }
+
     public AddPetAppBuilder addAddPetUseCase() {
 
-        AddPetDataAccessInterface petRepo = new InMemoryPetDataAccessObject();
+        AddPetViewModel vm = new AddPetViewModel();
+        AddPetOutputBoundary presenter = new AddPetPresenter(vm);
 
-        AddPetViewModel addPetViewModel = new AddPetViewModel();
-        AddPetOutputBoundary presenter = new AddPetPresenter(addPetViewModel);
-
-        PetFactory petFactory = new PetFactory();
+        PetFactory factory = new PetFactory();
 
         AddPetInputBoundary interactor =
-                new AddPetInteractor(petFactory, petRepo, presenter);
+                new AddPetInteractor(factory, petRepo, presenter);
 
         this.addPetController = new AddPetController(interactor);
-        this.addPetView.setViewModel(addPetViewModel);
+        this.addPetView.setViewModel(vm);
         this.addPetView.setAddPetController(addPetController);
 
         return this;
     }
 
+    public AddPetAppBuilder addDeletePetUseCase() {
+
+        DeletePetViewModel vm = new DeletePetViewModel();
+        DeletePetOutputBoundary presenter = new DeletePetPresenter(vm);
+
+        DeletePetInputBoundary interactor =
+                new DeletePetInteractor(petRepo, presenter);
+
+        this.deletePetController = new DeletePetController(interactor);
+
+        this.deletePetView.setViewModel(vm);
+        this.deletePetView.setDeletePetController(deletePetController);
+
+        return this;
+    }
+
     public JFrame build() {
-        JFrame frame = new JFrame("Add Pet");
+
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.add("Add Pet", addPetView);
+        tabs.add("Delete Pet", deletePetView);
+
+        JFrame frame = new JFrame("Pet Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(addPetView);
+        frame.setContentPane(tabs);
+
         return frame;
     }
 }
+
+
 
 

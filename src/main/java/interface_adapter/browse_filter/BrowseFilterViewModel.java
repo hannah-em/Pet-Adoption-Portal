@@ -10,8 +10,13 @@ public class BrowseFilterViewModel extends ViewModel<BrowseFilterState> {
     public static final String APPLY_FILTERS_BUTTON_LABEL = "Apply Filters";
 
     public BrowseFilterViewModel() {
-        super("browse filter");
+        super("browse and filter");
         setState(new BrowseFilterState());
+    }
+
+    @Override
+    public String getViewName() {
+        return "browse and filter";
     }
 }
 

@@ -18,7 +18,7 @@ public class BrowseFilterPresenter implements BrowseFilterOutputBoundary {
     @Override
     public void present(BrowseFilterOutputData outputData) {
         List<String> petStrings = outputData.getPets().stream()
-                .map(p -> p.getName() + " | " + p.getType() + " | " + p.getBreed() + " | " + p.getGender())
+                .map(p -> p.getId() + " | " + p.getName() + " | " + p.getType() + " | " + p.getBreed() + " | " + p.getGender())
                 .collect(Collectors.toList());
 
         // ★ Access the state inside the ViewModel

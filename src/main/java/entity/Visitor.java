@@ -7,11 +7,9 @@ public class Visitor extends User{
     private String address;
     private String homeEvi;
     private String occupation;
-    private String phoneNum;
+    private String tel;
     private String email;
     private String age;
-    private String phoneNumber;
-    private String email;
 
     /**
      * Creates a new user with the given non-empty name and non-empty password.
@@ -28,7 +26,7 @@ public class Visitor extends User{
         this.homeEvi = "";
         this.occupation = "";
         this.email = "";
-        this.phoneNum = "";
+        this.tel = "";
         this.age = "";
     }
 
@@ -89,12 +87,16 @@ public class Visitor extends User{
         this.age = age;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
+    public String getTel() {
+        return tel;
     }
 
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getUserType() {
+        return "visitor";
     }
 
 }

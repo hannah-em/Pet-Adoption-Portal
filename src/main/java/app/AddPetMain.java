@@ -11,7 +11,9 @@ public class AddPetMain {
 
         JFrame app = builder
                 .addAddPetView()
+                .addDeletePetView()
                 .addAddPetUseCase()
+                .addDeletePetUseCase()
                 .build();
 
         app.pack();
