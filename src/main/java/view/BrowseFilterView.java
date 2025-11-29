@@ -33,15 +33,11 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
     );
     private final JTable petTable = new JTable(tableModel);
 
-    public BrowseFilterView(BrowseFilterController controller,
-                            BrowseFilterViewModel viewModel,
-                            ViewPetDetailsController detailsController,
+    public BrowseFilterView(BrowseFilterViewModel viewModel,
                             ViewPetDetailsViewModel detailsViewModel
                             ) {
 
-        this.controller = controller;
         this.viewModel = viewModel;
-        this.detailsController = detailsController;
         this.detailsViewModel = detailsViewModel;
 
         viewModel.addPropertyChangeListener(this);
@@ -113,10 +109,8 @@ public class BrowseFilterView extends JPanel implements PropertyChangeListener {
                 int row = petTable.getSelectedRow();
                 if (row != -1) {
                     String petId = tableModel.getValueAt(row, 0).toString();
-                    System.out.println("Clicked pet ID: " + petId);
-
-                    new ViewPetDetailsView(detailsViewModel);
                     detailsController.execute(petId);
+                    viewPetDetailsView.setVisible(true);
                 }
             }
         });

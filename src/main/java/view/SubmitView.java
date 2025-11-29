@@ -15,7 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class SubmitView extends JPanel implements ActionListener, PropertyChangeListener {
-    final String viewName = "Submit";
+    final String viewName = "submit";
     private final SubmitViewModel submitViewModel;
 
     private final JTextField usernameInputField = new JTextField(15);

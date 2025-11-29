@@ -115,6 +115,13 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
+    public AppBuilder addSubmitApplicationView() {
+        submitViewModel = new SubmitViewModel();
+        submitView = new SubmitView(submitViewModel);
+        cardPanel.add(submitView, submitView.getViewName());
+        return this;
+    }
+
     public AppBuilder addViewPetDetails() {
         viewPetDetailsViewModel = new ViewPetDetailsViewModel();
         viewPetDetailsView = new ViewPetDetailsView(viewPetDetailsViewModel);
@@ -122,10 +129,11 @@ public class AppBuilder {
     }
 
     public AppBuilder addViewPetDetailsUseCase() {
-        final ViewPetDetailsOutputBoundary viewPetDetailsOutputBoundary = new ViewPetDetailsPresenter(viewPetDetailsViewModel);
+        final ViewPetDetailsOutputBoundary viewPetDetailsOutputBoundary = new ViewPetDetailsPresenter(viewPetDetailsViewModel, viewManagerModel, submitViewModel);
         final ViewPetDetailsInputBoundary viewPetDetailsInputBoundary = new ViewPetDetailsInteractor(petGateway, viewPetDetailsOutputBoundary);
 
         this.viewPetDetailsController = new ViewPetDetailsController(viewPetDetailsInputBoundary);
+        viewPetDetailsView.setViewPetDetailsController(viewPetDetailsController);
         return this;
     }
 
@@ -134,13 +142,6 @@ public class AppBuilder {
         browseFilterView =
                 new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel);
         cardPanel.add(browseFilterView, browseFilterView.getViewName());
-        return this;
-    }
-
-    public AppBuilder addSubmitApplicationView() {
-        submitViewModel = new SubmitViewModel();
-        submitView = new SubmitView(submitViewModel);
-        cardPanel.add(submitView, submitView.getViewName());
         return this;
     }
 
@@ -220,6 +221,7 @@ public class AppBuilder {
         BrowseFilterController browseFilterController = new BrowseFilterController(browseFilterInputBoundary);
         browseFilterView.setBrowseFilterController(browseFilterController);
         browseFilterView.setDetailsController(viewPetDetailsController);
+        browseFilterView.setViewPetDetailsView(viewPetDetailsView);
         return this;
     }
 

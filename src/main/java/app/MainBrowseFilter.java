@@ -78,7 +78,7 @@ public class MainBrowseFilter {
         viewPetDetailsView.setViewPetDetailsController(detailsController);
 
         BrowseFilterView browseFilterView =
-                new BrowseFilterView(controller, vm, detailsController, detailsViewModel);
+                new BrowseFilterView(vm, detailsViewModel);
 
         browseFilterView.setViewPetDetailsView(viewPetDetailsView);
 
