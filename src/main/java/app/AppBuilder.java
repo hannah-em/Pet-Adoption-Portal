@@ -1,14 +1,18 @@
 package app;
 
 import data_access.*;
+import entity.PetFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.add_pet.AddPetPageController;
-import interface_adapter.add_pet.AddPetViewModel;
+import interface_adapter.add_pet.*;
 import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterPageController;
 import interface_adapter.browse_filter.BrowseFilterPresenter;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
+import interface_adapter.delete_pet.DeletePetController;
+import interface_adapter.delete_pet.DeletePetPresenter;
+import interface_adapter.delete_pet.DeletePetView;
+import interface_adapter.delete_pet.DeletePetViewModel;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
@@ -18,6 +22,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.manage_application.ManageApplicationView;
 import interface_adapter.manage_application.ManageApplicationViewModel;
 import interface_adapter.manage_application.ManageApplicationsPageController;
 import interface_adapter.signup.SignupController;
@@ -30,6 +35,9 @@ import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
 import interface_adapter.view_pet_details.ViewPetDetailsPresenter;
 import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
+import use_case.add_pet.AddPetInputBoundary;
+import use_case.add_pet.AddPetInteractor;
+import use_case.add_pet.AddPetOutputBoundary;
 import use_case.browse_filter.BrowseFilterInputBoundary;
 import use_case.browse_filter.BrowseFilterInteractor;
 import use_case.browse_filter.BrowseFilterOutputBoundary;
@@ -37,6 +45,9 @@ import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 //import use_case.login.LoginInputBoundary; it wasn't working, did login not have input boundary?
+import use_case.delete_pet.DeletePetInputBoundary;
+import use_case.delete_pet.DeletePetInteractor;
+import use_case.delete_pet.DeletePetOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -52,6 +63,10 @@ import use_case.submit_application.SubmitOutputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInteractor;
 import use_case.view_pet_details.ViewPetDetailsOutputBoundary;
+import interface_adapter.add_pet.*;
+import use_case.add_pet.*;
+import interface_adapter.delete_pet.*;
+import use_case.delete_pet.*;
 import view.*;
 
 import javax.swing.*;
@@ -102,6 +117,11 @@ public class AppBuilder {
     private AddPetViewModel addPetViewModel;
     private HomeViewModel homeViewModel;
     private HomeView homeView;
+    private AddPetView addPetView;
+    private DeletePetView deletePetView;
+    private AddPetController addPetController;
+    private DeletePetController deletePetController;
+    private SQLitePetDataAccessObject petRepo = new SQLitePetDataAccessObject();
 
     public AppBuilder() {
         try {
@@ -255,6 +275,51 @@ public class AppBuilder {
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
         loggedInView.setChangePasswordController(changePasswordController);
+        return this;
+    }
+
+    public AppBuilder addAddPetView() {
+        this.addPetView = new AddPetView();
+        cardPanel.add(addPetView, addPetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDeletePetView() {
+        this.deletePetView = new DeletePetView();
+        cardPanel.add(deletePetView, deletePetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addAddPetUseCase() {
+
+        AddPetViewModel vm = new AddPetViewModel();
+        AddPetOutputBoundary presenter = new AddPetPresenter(vm);
+
+        PetFactory factory = new PetFactory();
+
+        AddPetInputBoundary interactor =
+                new AddPetInteractor(factory, petRepo, presenter);
+
+        this.addPetController = new AddPetController(interactor);
+        this.addPetView.setViewModel(vm);
+        this.addPetView.setAddPetController(addPetController);
+
+        return this;
+    }
+
+    public AppBuilder addDeletePetUseCase() {
+
+        DeletePetViewModel vm = new DeletePetViewModel();
+        DeletePetOutputBoundary presenter = new DeletePetPresenter(vm);
+
+        DeletePetInputBoundary interactor =
+                new DeletePetInteractor(petRepo, presenter);
+
+        this.deletePetController = new DeletePetController(interactor);
+
+        this.deletePetView.setViewModel(vm);
+        this.deletePetView.setDeletePetController(deletePetController);
+
         return this;
     }
 

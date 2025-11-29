@@ -18,6 +18,10 @@ public class Main {
                 .addChangePasswordUseCase()
                 .addSubmitApplicationUseCase()
                 .addBrowseFilterUseCase()
+                .addAddPetView()
+                .addDeletePetView()
+                .addAddPetUseCase()
+                .addDeletePetUseCase()
                 .addHomeView()
                 .addLogoutUseCase()
                 .build();
