@@ -55,7 +55,7 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
     public Application fetchApplicationById(String application_id) { return applicationMap.get(application_id); }
 
     public void addApplication(Application application) {
-        String sql = "INSERT OR REPLACE INTO applications (id, pet_id, first_name, last_name, email, phone, age, " +
+        String sql = "INSERT INTO applications (id, pet_id, first_name, last_name, email, phone, age, " +
                 "occupation, reason, environment, availability, previous_experience) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -70,16 +70,19 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
             stmt.setString(8, application.getOccupation());
             stmt.setString(9, application.getReason());
             stmt.setString(10, application.getHomeEnvironment());
-            stmt.setString(10, application.getAvailability());
-            stmt.setString(11, application.getPreviousExperience());
+            stmt.setString(11, application.getAvailability());        // FIXED
+            stmt.setString(12, application.getPreviousExperience());   // FIXED
             stmt.executeUpdate();
-            System.out.println("✅ Added application to DB: " + application.getFirstName() + " "
-                    + application.getLastName() + "'s application for"
-                    + application.getPetId() + "ID: " + application.getApplicationId());
+
+            // 🔥 save to memory list too
+            applicationMap.put(application.getApplicationId(), application);
+
+            System.out.println("✅ Application saved: " + application.getApplicationId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     // Update status of application (for admin):
     public void updateApplicationStatus (Application application, String status) {
@@ -117,5 +120,6 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
         }
     }
 }
+
 
 

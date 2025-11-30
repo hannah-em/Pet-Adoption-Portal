@@ -25,7 +25,6 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.submit_application.SubmitController;
-import interface_adapter.submit_application.SubmitPageController;
 import interface_adapter.submit_application.SubmitPresenter;
 import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
@@ -44,6 +43,8 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.manage_application.ManageApplicationInteractor;
+import use_case.manage_application.ManageApplicationOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -103,6 +104,8 @@ public class AppBuilder {
     private AddPetViewModel addPetViewModel;
     private HomeViewModel homeViewModel;
     private HomeView homeView;
+    private ManageApplicationController manageApplicationController;
+    private ManageApplicationInteractor manageApplicationInteractor;
 
     public AppBuilder() {
         try {
@@ -117,28 +120,6 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
-    public AppBuilder addViewPetDetails() {
-        viewPetDetailsViewModel = new ViewPetDetailsViewModel();
-        viewPetDetailsView = new ViewPetDetailsView(viewPetDetailsViewModel);
-        return this;
-    }
-
-    public AppBuilder addViewPetDetailsUseCase() {
-        final ViewPetDetailsOutputBoundary viewPetDetailsOutputBoundary = new ViewPetDetailsPresenter(viewPetDetailsViewModel);
-        final ViewPetDetailsInputBoundary viewPetDetailsInputBoundary = new ViewPetDetailsInteractor(petGateway, viewPetDetailsOutputBoundary);
-
-        this.viewPetDetailsController = new ViewPetDetailsController(viewPetDetailsInputBoundary);
-        return this;
-    }
-
-    public AppBuilder addBrowseFilterView() {
-        browseFilterViewModel = new BrowseFilterViewModel();
-        browseFilterView =
-                new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel);
-        cardPanel.add(browseFilterView, browseFilterView.getViewName());
-        return this;
-    }
-
     public AppBuilder addSubmitApplicationView() {
         submitViewModel = new SubmitViewModel();
         submitView = new SubmitView(submitViewModel);
@@ -146,9 +127,52 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewPetDetails() {
+        viewPetDetailsViewModel = new ViewPetDetailsViewModel();
+        viewPetDetailsView = new ViewPetDetailsView(viewPetDetailsViewModel);
+        return this;
+    }
+
+    public AppBuilder addViewPetDetailsUseCase() {
+        final ViewPetDetailsOutputBoundary viewPetDetailsOutputBoundary = new ViewPetDetailsPresenter(viewPetDetailsViewModel, viewManagerModel, submitViewModel);
+        final ViewPetDetailsInputBoundary viewPetDetailsInputBoundary = new ViewPetDetailsInteractor(petGateway, viewPetDetailsOutputBoundary);
+
+        this.viewPetDetailsController = new ViewPetDetailsController(viewPetDetailsInputBoundary);
+        viewPetDetailsView.setViewPetDetailsController(viewPetDetailsController);
+        return this;
+    }
+
+    public AppBuilder addBrowseFilterView() {
+        browseFilterViewModel = new BrowseFilterViewModel();
+        browseFilterView =
+                new BrowseFilterView(browseFilterViewModel, viewPetDetailsViewModel, viewManagerModel);
+        cardPanel.add(browseFilterView, browseFilterView.getViewName());
+        return this;
+    }
+
+
+
     public AppBuilder addManageApplicationView() {
+
+        // 1. ViewModel
         manageApplicationViewModel = new ManageApplicationViewModel();
-        manageApplicationView = new ManageApplicationView(manageApplicationViewModel);
+
+        // 2. Presenter
+        ManageApplicationOutputBoundary presenter =
+                new ManageApplicationPresenter(manageApplicationViewModel);
+
+        // 3. Interactor (DAO already exists!)
+        ManageApplicationInteractor interactor =
+                new ManageApplicationInteractor(applicationDataAccessObject, presenter);
+
+        // 4. Controller
+        manageApplicationController =
+                new ManageApplicationController(interactor);
+
+        // 5. View (controller is NOT null now)
+        manageApplicationView =
+                new ManageApplicationView(manageApplicationController, manageApplicationViewModel);
+
         cardPanel.add(manageApplicationView, manageApplicationView.getViewName());
         return this;
     }
@@ -181,8 +205,6 @@ public class AppBuilder {
         // Create page-opening controllers (no input required)
         BrowseFilterPageController browseFilterPageController =
                 new BrowseFilterPageController(viewManagerModel, browseFilterViewModel);
-        SubmitPageController submitPageController =
-                new SubmitPageController(viewManagerModel, submitViewModel);
         AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
         ManageApplicationsPageController manageApplicationsPageController =
                 new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
@@ -191,7 +213,6 @@ public class AppBuilder {
         homeView = new HomeView(
                 loggedInViewModel,
                 browseFilterPageController,
-                submitPageController,
                 addPetPageController,
                 manageApplicationsPageController
         );
@@ -222,6 +243,7 @@ public class AppBuilder {
         BrowseFilterController browseFilterController = new BrowseFilterController(browseFilterInputBoundary);
         browseFilterView.setBrowseFilterController(browseFilterController);
         browseFilterView.setDetailsController(viewPetDetailsController);
+        browseFilterView.setViewPetDetailsView(viewPetDetailsView);
         return this;
     }
 
@@ -290,4 +312,5 @@ public class AppBuilder {
 
 
 }
+
 

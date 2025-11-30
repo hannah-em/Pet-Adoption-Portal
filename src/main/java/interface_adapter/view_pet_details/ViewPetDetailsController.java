@@ -12,5 +12,7 @@ public class ViewPetDetailsController {
         ViewPetDetailsInputData inputData = new ViewPetDetailsInputData(petID);
         interactor.execute(inputData);
     }
-
+    public void switchToApplicationView() {
+        interactor.switchToApplicationView();
+    }
 }

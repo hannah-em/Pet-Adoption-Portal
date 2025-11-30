@@ -1,12 +1,11 @@
-
 package entity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Application {
 
     // Class variable to keep track of how many applcations, used as id
-    public static int counter = 0;
 
     // Status of the application, for application processing
     private String status;
@@ -78,9 +77,8 @@ public class Application {
         this.home_environment = home_environment;
         this.availability = availability;
         this.previous_experience = previous_experience;
-        this.application_id = Integer.toString(counter); // use counter count as id of application
+        this.application_id = UUID.randomUUID().toString();; // use counter count as id of application
         this.status = "processing";
-        counter++; // increase counter count by 1
 
     }
 
