@@ -1,10 +1,26 @@
 package app;
+import javax.swing.JFrame;
+import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-import data_access.*;
+import data_access.DBApplicationDataAccessObject;
+import data_access.DatabaseApplicationGateway;
+import data_access.DatabaseConnection;
+import data_access.DatabasePetGateway;
+import data_access.FileUserDataAccessObject;
+import data_access.PetAPIGatewayInterface;
+import data_access.SQLitePetDataAccessObject;
 import entity.PetFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.add_pet.*;
+import interface_adapter.add_pet.AddPetController;
+import interface_adapter.add_pet.AddPetPageController;
+import interface_adapter.add_pet.AddPetPresenter;
+import interface_adapter.add_pet.AddPetView;
+import interface_adapter.add_pet.AddPetViewModel;
 import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterPageController;
 import interface_adapter.browse_filter.BrowseFilterPresenter;
@@ -62,12 +78,14 @@ import use_case.submit_application.SubmitOutputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInteractor;
 import use_case.view_pet_details.ViewPetDetailsOutputBoundary;
-import view.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.SQLException;
+import view.BrowseFilterView;
+import view.HomeView;
+import view.LoggedInView;
+import view.LoginView;
+import view.SignupView;
+import view.SubmitView;
+import view.ViewManager;
+import view.ViewPetDetailsView;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -355,8 +373,6 @@ public class AppBuilder {
         return this;
     }
 
-
-
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -368,7 +384,5 @@ public class AppBuilder {
         return application;
     }
 
-
 }
-
 

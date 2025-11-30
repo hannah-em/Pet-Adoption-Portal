@@ -34,7 +34,7 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareFailView("Username cannot be empty");
         }
         else {
-            String userType = signupInputData.getUserType();
+            final String userType = signupInputData.getUserType();
             final User user = userFactory.create(
                     userType,
                     signupInputData.getUsername(),
@@ -45,6 +45,7 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareSuccessView(signupOutputData);
         }
     }
+
     @Override
     public void switchToLoginView() {
         userPresenter.switchToLoginView();

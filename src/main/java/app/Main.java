@@ -1,11 +1,15 @@
 package app;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
+    /**
+     *  Main for Pet Adoption Portal.
+     *  @param args main
+     */
     public static void main(String[] args) {
-        AppBuilder appBuilder = new AppBuilder();
-        JFrame application = appBuilder
+        final AppBuilder appBuilder = new AppBuilder();
+        final JFrame application = appBuilder
                 .addLoginView()
                 .addSignupView()
                 .addLoggedInView()

@@ -37,7 +37,8 @@ public class LoginInteractor implements LoginInputBoundary {
                 final String role;
                 if (user instanceof Administrator) {
                     role = "administrator";
-                } else {
+                }
+                else {
                     role = "visitor";
                 }
 
@@ -48,7 +49,7 @@ public class LoginInteractor implements LoginInputBoundary {
     }
 
     @Override
-    public void switchToSignupView(){
+    public void switchToSignupView() {
         loginPresenter.switchToSignupView();
     }
 }

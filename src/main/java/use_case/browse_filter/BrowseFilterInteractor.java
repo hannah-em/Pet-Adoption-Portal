@@ -1,8 +1,9 @@
 package use_case.browse_filter;
 
+import java.util.List;
+
 import data_access.PetAPIGatewayInterface;
 import entity.Pet;
-import java.util.List;
 
 public class BrowseFilterInteractor implements BrowseFilterInputBoundary {
     private final PetAPIGatewayInterface petGateway;
@@ -15,8 +16,8 @@ public class BrowseFilterInteractor implements BrowseFilterInputBoundary {
 
     @Override
     public void execute(BrowseFilterInputData inputData) {
-        List<Pet> pets = petGateway.fetchPets(inputData.getType(), inputData.getGender());
-        BrowseFilterOutputData outputData = new BrowseFilterOutputData(pets);
+        final List<Pet> pets = petGateway.fetchPets(inputData.getType(), inputData.getGender());
+        final BrowseFilterOutputData outputData = new BrowseFilterOutputData(pets);
         presenter.present(outputData);
     }
 }

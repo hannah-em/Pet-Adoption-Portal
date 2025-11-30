@@ -18,35 +18,40 @@ public class SubmitInteractor implements SubmitInputBoundary {
 
     @Override
     public void execute(SubmitInputData submitInputData) {
-        //incomplete form
-        if ("".equals(submitInputData.getUsername())||
-                "".equals(submitInputData.getFirstname())||
-                "".equals(submitInputData.getLastname())||
-                "".equals(submitInputData.getAge())||
-                "".equals(submitInputData.getOccupation())||
-                "".equals(submitInputData.getAddress())||
-                "".equals(submitInputData.getHomeEvi())||
-                "".equals(submitInputData.getTel())||
-                "".equals(submitInputData.getEmail())||
-                "".equals(submitInputData.getReason())||
-                "".equals(submitInputData.getPrevExp())||
-                "".equals(submitInputData.getAvailability())) {
+        /* incomplete form */
+        if ("".equals(submitInputData.getUsername())
+                || "".equals(submitInputData.getFirstname())
+                || "".equals(submitInputData.getLastname())
+                || "".equals(submitInputData.getAge())
+                || "".equals(submitInputData.getOccupation())
+                || "".equals(submitInputData.getAddress())
+                || "".equals(submitInputData.getHomeEvi())
+                || "".equals(submitInputData.getTel())
+                || "".equals(submitInputData.getEmail())
+                || "".equals(submitInputData.getReason())
+                || "".equals(submitInputData.getPrevExp())
+                || "".equals(submitInputData.getAvailability())) {
             submitPresenter.prepareFailView("Some required fields are missing");
         }
-        //notify typo in username (everyone should have a username and personal account in this stage)
-        else if (! userDataAccessObject.existsByName(submitInputData.getUsername())){
+
+        /* notify typo in username (everyone should have a username and personal account in this stage) */
+        else if (!userDataAccessObject.existsByName(submitInputData.getUsername())) {
             submitPresenter.prepareFailView("Username not found");
         }
-        //prevent using others' account info to make application
-        //notify that the username entered does not match the current logged-in account
-        else if (! submitInputData.getUsername().equals(userDataAccessObject.getCurrentUsername())){
+        /*
+        prevent using others' account info to make application
+        notify that the username entered does not match the current logged-in account
+        */
+        else if (!submitInputData.getUsername().equals(userDataAccessObject.getCurrentUsername())) {
             submitPresenter.prepareFailView("Username does not match");
         }
         else {
-            final Visitor visitor = (Visitor)userDataAccessObject.get(submitInputData.getUsername());
-            //store or update visitor additional info in database for future use, like
-            //upgrading the submit view: when user who applied before and had the information in database,
-            // we can automatically fill in the blanks of application form and show to visitor
+            final Visitor visitor = (Visitor) userDataAccessObject.get(submitInputData.getUsername());
+            /*
+            store or update visitor additional info in database for future use, like
+            upgrading the submit view: when user who applied before and had the information in database,
+             we can automatically fill in the blanks of application form and show to visitor
+            */
             visitor.setFirstName(submitInputData.getFirstname());
             visitor.setLastName(submitInputData.getLastname());
             visitor.setAge(submitInputData.getAge());
@@ -56,16 +61,16 @@ public class SubmitInteractor implements SubmitInputBoundary {
             visitor.setEmail(submitInputData.getEmail());
             visitor.setTel(submitInputData.getTel());
             userDataAccessObject.save(visitor);
-            //create an application and save it into database
+            /* create an application and save it into database */
             final Application application = new Application(submitInputData.getPetId(),
                     visitor.getFirstName(), visitor.getLastName(), visitor.getEmail(), visitor.getTel(),
                     visitor.getAge(), visitor.getOccupation(), submitInputData.getReason(), visitor.getHomeEvi(),
                     submitInputData.getAvailability(), submitInputData.getPrevExp());
             applicationDataAccessObject.save(application);
-            //notify user applying successfully
+            /* notify user applying successfully */
             submitPresenter.prepareSuccessView(
-                    "Your application has been successfully submitted. " +
-                            "We will review it and contact you shortly. Thank you!");
+                    "Your application has been successfully submitted. "
+                            + "We will review it and contact you shortly. Thank you!");
         }
     }
 
