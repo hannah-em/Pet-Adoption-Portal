@@ -2,11 +2,11 @@ package use_case.delete_pet;
 
 import entity.Pet;
 
-public class DeletePetInteractor implements DeletePetInputBoundary{
+public class DeletePetInteractor implements DeletePetInputBoundary {
     private final DeletePetDataAccessInterface petGallery;
     private final DeletePetOutputBoundary presenter;
 
-    public DeletePetInteractor( DeletePetDataAccessInterface petGallery,
+    public DeletePetInteractor(DeletePetDataAccessInterface petGallery,
                                DeletePetOutputBoundary presenter) {
         this.petGallery = petGallery;
         this.presenter = presenter;
@@ -15,19 +15,19 @@ public class DeletePetInteractor implements DeletePetInputBoundary{
     @Override
     public void execute(DeletePetInputData deletePetInputData) {
 
-        String petId = deletePetInputData.getId();
+        final String petId = deletePetInputData.getId();
 
         if (petGallery.existsPet(petId)) {
 
-            Pet pet = petGallery.getPet(petId);
+            final Pet pet = petGallery.getPet(petId);
 
-            DeletePetOutputData petData = new DeletePetOutputData(
+            final DeletePetOutputData petData = new DeletePetOutputData(
                     pet.getId(),
                     pet.getName(),
                     pet.getType(),
-                    "Pet ID: " + pet.getId() + "\n" +
-                            "Name: " + pet.getName() + "\n" +
-                            "Type: " + pet.getType(),
+                    "Pet ID: " + pet.getId() + "\n"
+                            + "Name: " + pet.getName() + "\n"
+                            + "Type: " + pet.getType(),
                     false
             );
 
