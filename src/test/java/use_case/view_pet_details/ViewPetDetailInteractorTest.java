@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-public class ViewPetDetailInteractorTest {
+class ViewPetDetailInteractorTest {
     private PetAPIGatewayInterface petGateway;
     private ViewPetDetailsOutputBoundary presenter;
     private ViewPetDetailsInteractor interactor;

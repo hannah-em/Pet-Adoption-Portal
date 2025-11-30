@@ -6,6 +6,7 @@ import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterPageController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.logout.LogoutController;
 import interface_adapter.manage_application.ManageApplicationController;
 import interface_adapter.manage_application.ManageApplicationsPageController;
 
@@ -21,25 +22,37 @@ public class HomeView extends JPanel implements PropertyChangeListener {
     private JButton browseButton = new JButton("Browse Pets");
     private JButton changePetButton = new JButton("Add/Remove Pet");
     private JButton viewApplicationsButton = new JButton("View Applications");
+    private JButton logoutButton = new JButton("Logout");
 
     public HomeView(LoggedInViewModel loggedInViewModel,
                     BrowseFilterPageController browsePageController,
                     AddPetPageController addPetPageController,
-                    ManageApplicationsPageController manageAppsController) {
+                    ManageApplicationsPageController manageAppsController,
+                    LogoutController logoutController) {
 
         this.loggedInViewModel = loggedInViewModel;
         loggedInViewModel.addPropertyChangeListener(this);
 
-        setLayout(new GridLayout(5, 1, 10, 10));
+        // Change to BorderLayout
+        setLayout(new BorderLayout(10, 10));
 
-        add(browseButton);
-        add(changePetButton);
-        add(viewApplicationsButton);
+        // Added Logout button to the top right
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topPanel.add(logoutButton);
+        add(topPanel, BorderLayout.NORTH);
+
+        // button in middle
+        JPanel centerPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        centerPanel.add(browseButton);
+        centerPanel.add(changePetButton);
+        centerPanel.add(viewApplicationsButton);
+        add(centerPanel, BorderLayout.CENTER);
 
         // Link buttons to controllers
         browseButton.addActionListener(e -> browsePageController.execute());
         changePetButton.addActionListener(e -> addPetPageController.execute());
         viewApplicationsButton.addActionListener(e -> manageAppsController.execute());
+        logoutButton.addActionListener(e -> logoutController.execute());
 
         propertyChange(null);
     }

@@ -206,13 +206,20 @@ public class AppBuilder {
         AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
         ManageApplicationsPageController manageApplicationsPageController =
                 new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary =
+                new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController =
+                new LogoutController(logoutInteractor);
 
         // Create the actual HomeView
         homeView = new HomeView(
                 loggedInViewModel,
                 browseFilterPageController,
                 addPetPageController,
-                manageApplicationsPageController
+                manageApplicationsPageController,
+                logoutController
         );
 
         cardPanel.add(homeView, "home");
