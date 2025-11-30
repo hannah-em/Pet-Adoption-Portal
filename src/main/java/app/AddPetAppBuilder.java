@@ -22,8 +22,6 @@ public class AddPetAppBuilder {
     private AddPetController addPetController;
     private DeletePetController deletePetController;
 
-    // shared repo
-    //private InMemoryPetDataAccessObject petRepo = new InMemoryPetDataAccessObject();
     private SQLitePetDataAccessObject petRepo = new SQLitePetDataAccessObject();
 
 

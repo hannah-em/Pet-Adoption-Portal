@@ -93,6 +93,10 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
 
     }
 
+    public String getViewName() {
+        return viewName;
+    }
+
     public void setViewModel(DeletePetViewModel deletePetViewModel) {
         this.viewModel = deletePetViewModel;
         this.viewModel.addPropertyChangeListener(this);
