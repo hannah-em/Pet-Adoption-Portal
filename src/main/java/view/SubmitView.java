@@ -88,8 +88,8 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         availabilityInputArea.setLineWrap(true);
         availabilityInputArea.setWrapStyleWord(true);
         JScrollPane availabilityScroll = new JScrollPane(availabilityInputArea);
-        prevExpInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
-        prevExpInfo.add(availabilityScroll);
+        availabilityInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
+        availabilityInfo.add(availabilityScroll);
 
         final JPanel buttons = new JPanel();
         submit = new JButton(SubmitViewModel.SUBMIT_BUTTON_LABEL);
@@ -399,6 +399,17 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
     public void propertyChange(PropertyChangeEvent evt) {
         //updating the error or success message in submit state
         final SubmitState state = (SubmitState) evt.getNewValue();
+
+        usernameInputField.setText(state.getUsername());
+        firstnameInputField.setText(state.getFirstname());
+        lastnameInputField.setText(state.getLastname());
+        ageInputField.setText(state.getAge());
+        occupationInputField.setText(state.getOccupation());
+        addressInputField.setText(state.getAddress());
+        homeEviInputArea.setText(state.getHomeEvi());
+        telInputField.setText(state.getTel());
+        emailInputField.setText(state.getEmail());
+
         if (state.getError() != null) {
             JOptionPane.showMessageDialog(this, state.getError());
         }
