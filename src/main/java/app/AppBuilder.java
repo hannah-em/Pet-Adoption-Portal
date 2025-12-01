@@ -116,6 +116,7 @@ public class AppBuilder {
     private BrowseFilterViewModel browseFilterViewModel;
     private SubmitView submitView;
     private SubmitViewModel submitViewModel;
+    private SubmitController submitController;
     private ManageApplicationView manageApplicationView;
     private ManageApplicationViewModel manageApplicationViewModel;
     private SignupView signupView;
@@ -266,8 +267,9 @@ public class AppBuilder {
         final SubmitInputBoundary submitInputBoundary =
                 new SubmitInteractor(userDataAccessObject, applicationDataAccessObject, submitOutputBoundary);
 
-        SubmitController submitController = new SubmitController(submitInputBoundary);
+        this.submitController = new SubmitController(submitInputBoundary);
         submitView.setSubmitController(submitController);
+        viewPetDetailsView.setSubmitController(submitController);
         return this;
     }
 

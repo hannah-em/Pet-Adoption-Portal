@@ -4,6 +4,7 @@ import data_access.InMemoryApplicationDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.User;
 import entity.UserFactory;
+import entity.Visitor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

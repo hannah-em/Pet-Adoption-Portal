@@ -24,4 +24,8 @@ public class SubmitController {
     public void switchToBrowserFilterView() {
         submitUseCaseInteractor.switchToBrowserFilterView();
     }
+
+    public void autoFill() {
+        submitUseCaseInteractor.autofill();
+    }
 }

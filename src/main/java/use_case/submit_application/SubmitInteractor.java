@@ -1,6 +1,7 @@
 package use_case.submit_application;
 
 import entity.Application;
+import entity.User;
 import entity.Visitor;
 
 public class SubmitInteractor implements SubmitInputBoundary {
@@ -72,5 +73,30 @@ public class SubmitInteractor implements SubmitInputBoundary {
     @Override
     public void switchToBrowserFilterView() {
         submitPresenter.switchToBrowserFilterView();
+    }
+
+    @Override
+    public void autofill() {
+        String username = userDataAccessObject.getCurrentUsername();
+        if (username == null || username.isEmpty()) {
+            return;
+        }
+        User user = userDataAccessObject.get(username);
+        if (!(user instanceof Visitor)) {
+            return;
+        }
+        Visitor visitor = (Visitor) user;
+        SubmitOutputData outputData = new SubmitOutputData(
+                visitor.getName(),
+                visitor.getFirstName(),
+                visitor.getLastName(),
+                visitor.getAge(),
+                visitor.getOccupation(),
+                visitor.getAddress(),
+                visitor.getHomeEvi(),
+                visitor.getTel(),
+                visitor.getEmail()
+                );
+        submitPresenter.prepareAutofillView(outputData);
     }
 }
