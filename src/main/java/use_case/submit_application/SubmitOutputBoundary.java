@@ -6,6 +6,8 @@ public interface SubmitOutputBoundary {
 
     void prepareFailView(String errorMessage);
 
+    void prepareAutofillView(SubmitOutputData submitOutputData);
+
     void switchToBrowserFilterView();
 
 }
