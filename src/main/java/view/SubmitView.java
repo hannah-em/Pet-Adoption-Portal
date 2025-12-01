@@ -38,8 +38,15 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         this.submitViewModel = submitViewModel;
         submitViewModel.addPropertyChangeListener(this);
 
+        this.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+
         final JLabel title = new JLabel(SubmitViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+
+        JLabel note = new JLabel(SubmitViewModel.NOTE);
+        note.setAlignmentX(Component.CENTER_ALIGNMENT);
+        note.setFont(new Font("Arial", Font.PLAIN, 15));
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SubmitViewModel.USERNAME_LABEL), usernameInputField);
@@ -65,7 +72,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         JScrollPane homeEviScroll = new JScrollPane(homeEviInputArea);
         homeEviInfo.add(new JLabel(SubmitViewModel.HOME_LABEL));
         homeEviInfo.add(homeEviScroll);
-
+        homeEviInfo.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
         final JPanel reasonInfo = new JPanel();
         reasonInfo.setLayout(new BoxLayout(reasonInfo, BoxLayout.Y_AXIS));
@@ -74,6 +81,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         JScrollPane reasonScroll = new JScrollPane(reasonInputArea);
         reasonInfo.add(new JLabel(SubmitViewModel.REASON_LABEL));
         reasonInfo.add(reasonScroll);
+        reasonInfo.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
         final JPanel prevExpInfo = new JPanel();
         prevExpInfo.setLayout(new BoxLayout(prevExpInfo, BoxLayout.Y_AXIS));
@@ -82,6 +90,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         JScrollPane prevExpScroll = new JScrollPane(prevExpInputArea);
         prevExpInfo.add(new JLabel(SubmitViewModel.EXP_LABEL));
         prevExpInfo.add(prevExpScroll);
+        prevExpInfo.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
         final JPanel availabilityInfo = new JPanel();
         availabilityInfo.setLayout(new BoxLayout(availabilityInfo, BoxLayout.Y_AXIS));
@@ -90,6 +99,7 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         JScrollPane availabilityScroll = new JScrollPane(availabilityInputArea);
         availabilityInfo.add(new JLabel(SubmitViewModel.AVAILABILITY_LABEL));
         availabilityInfo.add(availabilityScroll);
+        availabilityInfo.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
         final JPanel buttons = new JPanel();
         submit = new JButton(SubmitViewModel.SUBMIT_BUTTON_LABEL);
@@ -146,6 +156,9 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(title);
+        this.add(Box.createVerticalStrut(3));
+        this.add(note);
+        this.add(Box.createVerticalStrut(10));
         this.add(usernameInfo);
         this.add(firstnameInfo);
         this.add(lastnameInfo);
