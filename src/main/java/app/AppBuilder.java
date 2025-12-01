@@ -1,14 +1,31 @@
 package app;
+import javax.swing.JFrame;
+import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-import data_access.*;
+import data_access.DBApplicationDataAccessObject;
+import data_access.DatabaseApplicationGateway;
+import data_access.DatabaseConnection;
+import data_access.DatabasePetGateway;
+import data_access.FileUserDataAccessObject;
+import data_access.PetAPIGatewayInterface;
+import data_access.SQLitePetDataAccessObject;
+import entity.PetFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.add_pet.AddPetController;
 import interface_adapter.add_pet.AddPetPageController;
+import interface_adapter.add_pet.AddPetPresenter;
+import interface_adapter.add_pet.AddPetView;
 import interface_adapter.add_pet.AddPetViewModel;
 import interface_adapter.browse_filter.BrowseFilterController;
 import interface_adapter.browse_filter.BrowseFilterPageController;
 import interface_adapter.browse_filter.BrowseFilterPresenter;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
+import interface_adapter.delete_pet.*;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
@@ -18,9 +35,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.manage_application.ManageApplicationView;
-import interface_adapter.manage_application.ManageApplicationViewModel;
-import interface_adapter.manage_application.ManageApplicationsPageController;
+import interface_adapter.manage_application.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -30,6 +45,9 @@ import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
 import interface_adapter.view_pet_details.ViewPetDetailsPresenter;
 import interface_adapter.view_pet_details.ViewPetDetailsViewModel;
+import use_case.add_pet.AddPetInputBoundary;
+import use_case.add_pet.AddPetInteractor;
+import use_case.add_pet.AddPetOutputBoundary;
 import use_case.browse_filter.BrowseFilterInputBoundary;
 import use_case.browse_filter.BrowseFilterInteractor;
 import use_case.browse_filter.BrowseFilterOutputBoundary;
@@ -37,6 +55,9 @@ import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 //import use_case.login.LoginInputBoundary; it wasn't working, did login not have input boundary?
+import use_case.delete_pet.DeletePetInputBoundary;
+import use_case.delete_pet.DeletePetInteractor;
+import use_case.delete_pet.DeletePetOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -54,12 +75,14 @@ import use_case.submit_application.SubmitOutputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInteractor;
 import use_case.view_pet_details.ViewPetDetailsOutputBoundary;
-import view.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.SQLException;
+import view.BrowseFilterView;
+import view.HomeView;
+import view.LoggedInView;
+import view.LoginView;
+import view.SignupView;
+import view.SubmitView;
+import view.ViewManager;
+import view.ViewPetDetailsView;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -102,10 +125,16 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private AddPetViewModel addPetViewModel;
+    private DeletePetViewModel deletePetViewModel;
     private HomeViewModel homeViewModel;
     private HomeView homeView;
     private ManageApplicationController manageApplicationController;
     private ManageApplicationInteractor manageApplicationInteractor;
+    private AddPetView addPetView;
+    private DeletePetView deletePetView;
+    private AddPetController addPetController;
+    private DeletePetController deletePetController;
+    private SQLitePetDataAccessObject petRepo = new SQLitePetDataAccessObject();
 
     public AppBuilder() {
         try {
@@ -206,15 +235,24 @@ public class AppBuilder {
         BrowseFilterPageController browseFilterPageController =
                 new BrowseFilterPageController(viewManagerModel, browseFilterViewModel);
         AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
+        DeletePetPageController deletePetPageController = new DeletePetPageController(viewManagerModel, deletePetViewModel);
         ManageApplicationsPageController manageApplicationsPageController =
                 new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary =
+                new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController =
+                new LogoutController(logoutInteractor);
 
         // Create the actual HomeView
         homeView = new HomeView(
                 loggedInViewModel,
                 browseFilterPageController,
                 addPetPageController,
-                manageApplicationsPageController
+                deletePetPageController,
+                manageApplicationsPageController,
+                logoutController
         );
 
         cardPanel.add(homeView, "home");
@@ -281,6 +319,51 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addAddPetView() {
+        this.addPetView = new AddPetView();
+        cardPanel.add(addPetView, addPetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDeletePetView() {
+        this.deletePetView = new DeletePetView();
+        cardPanel.add(deletePetView, deletePetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addAddPetUseCase() {
+
+        this.addPetViewModel = new AddPetViewModel();
+        AddPetOutputBoundary presenter = new AddPetPresenter(addPetViewModel);
+
+        PetFactory factory = new PetFactory();
+
+        AddPetInputBoundary interactor =
+                new AddPetInteractor(factory, petRepo, presenter);
+
+        this.addPetController = new AddPetController(interactor);
+        this.addPetView.setViewModel(addPetViewModel);
+        this.addPetView.setAddPetController(addPetController);
+
+        return this;
+    }
+
+    public AppBuilder addDeletePetUseCase() {
+
+        this.deletePetViewModel = new DeletePetViewModel();
+        DeletePetOutputBoundary presenter = new DeletePetPresenter(deletePetViewModel);
+
+        DeletePetInputBoundary interactor =
+                new DeletePetInteractor(petRepo, presenter);
+
+        this.deletePetController = new DeletePetController(interactor);
+
+        this.deletePetView.setViewModel(deletePetViewModel);
+        this.deletePetView.setDeletePetController(deletePetController);
+
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
@@ -297,8 +380,6 @@ public class AppBuilder {
         return this;
     }
 
-
-
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -309,7 +390,6 @@ public class AppBuilder {
 
         return application;
     }
-
 
 }
 
