@@ -18,6 +18,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.manage_application.ManageApplicationController;
 import interface_adapter.manage_application.ManageApplicationView;
 import interface_adapter.manage_application.ManageApplicationViewModel;
 import interface_adapter.manage_application.ManageApplicationsPageController;
@@ -72,10 +73,10 @@ public class AppBuilder {
     // of the classes from the data_access package
 
     // DAO version using local file storage
-    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+    //final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
     // DAO version using a shared external database
-    //final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
 
     // Application DAO using a database
