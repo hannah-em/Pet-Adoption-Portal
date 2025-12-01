@@ -10,7 +10,7 @@ import data_access.DBApplicationDataAccessObject;
 import data_access.DatabaseApplicationGateway;
 import data_access.DatabaseConnection;
 import data_access.DatabasePetGateway;
-import data_access.FileUserDataAccessObject;
+import data_access.DBUserDataAccessObject;
 import data_access.PetAPIGatewayInterface;
 import data_access.SQLitePetDataAccessObject;
 import entity.PetFactory;
@@ -95,10 +95,10 @@ public class AppBuilder {
     // of the classes from the data_access package
 
     // DAO version using local file storage
-    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+    //final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
     // DAO version using a shared external database
-    //final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
 
     // Application DAO using a database
@@ -116,6 +116,7 @@ public class AppBuilder {
     private BrowseFilterViewModel browseFilterViewModel;
     private SubmitView submitView;
     private SubmitViewModel submitViewModel;
+    private SubmitController submitController;
     private ManageApplicationView manageApplicationView;
     private ManageApplicationViewModel manageApplicationViewModel;
     private SignupView signupView;
@@ -266,8 +267,9 @@ public class AppBuilder {
         final SubmitInputBoundary submitInputBoundary =
                 new SubmitInteractor(userDataAccessObject, applicationDataAccessObject, submitOutputBoundary);
 
-        SubmitController submitController = new SubmitController(submitInputBoundary);
+        this.submitController = new SubmitController(submitInputBoundary);
         submitView.setSubmitController(submitController);
+        viewPetDetailsView.setSubmitController(submitController);
         return this;
     }
 

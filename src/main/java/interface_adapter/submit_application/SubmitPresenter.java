@@ -3,6 +3,7 @@ package interface_adapter.submit_application;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.browse_filter.BrowseFilterViewModel;
 import use_case.submit_application.SubmitOutputBoundary;
+import use_case.submit_application.SubmitOutputData;
 
 public class SubmitPresenter implements SubmitOutputBoundary {
     private final SubmitViewModel submitViewModel;
@@ -26,6 +27,7 @@ public class SubmitPresenter implements SubmitOutputBoundary {
         //On success, switch back to BrowserFilter view
         viewManagerModel.setState(browseFilterViewModel.getViewName());
         viewManagerModel.firePropertyChange();
+        submitViewModel.resetState();
     }
 
     @Override
@@ -33,6 +35,23 @@ public class SubmitPresenter implements SubmitOutputBoundary {
         //username error or info not completed
         final SubmitState submitState = submitViewModel.getState();
         submitState.setError(errorMessage);
+        submitViewModel.firePropertyChange();
+    }
+
+    @Override
+    public void prepareAutofillView(SubmitOutputData submitOutputData) {
+        final SubmitState submitState = submitViewModel.getState();
+        submitState.setUsername(submitOutputData.getUsername());
+        submitState.setFirstname(submitOutputData.getFirstname());
+        submitState.setLastname(submitOutputData.getLastname());
+        submitState.setAge(submitOutputData.getAge());
+        submitState.setOccupation(submitOutputData.getOccupation());
+        submitState.setAddress(submitOutputData.getAddress());
+        submitState.setHomeEvi(submitOutputData.getHomeEvi());
+        submitState.setTel(submitOutputData.getTel());
+        submitState.setEmail(submitOutputData.getEmail());
+
+        submitViewModel.setState(submitState);
         submitViewModel.firePropertyChange();
     }
 

@@ -6,4 +6,6 @@ public interface SubmitInputBoundary {
 
     void switchToBrowserFilterView();
 
+    void autofill();
+
 }

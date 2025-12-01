@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.submit_application.SubmitController;
 import interface_adapter.submit_application.SubmitState;
 import interface_adapter.submit_application.SubmitViewModel;
 import interface_adapter.view_pet_details.ViewPetDetailsController;
@@ -17,6 +18,7 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
     private final SubmitViewModel submitViewModel = new SubmitViewModel();
     private final String viewName = "view pet details";
     private ViewPetDetailsController viewPetDetailsController;
+    private SubmitController submitController;
 
     private final JLabel nameLabel = new JLabel();
     private final JLabel typeLabel = new JLabel();
@@ -29,6 +31,9 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
 
     public void setViewPetDetailsController(ViewPetDetailsController controller) {
         this.viewPetDetailsController = controller;
+    }
+    public void setSubmitController(SubmitController submitController) {
+        this.submitController = submitController;
     }
 
 
@@ -55,6 +60,7 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
             currentState.setPetId(viewModel.getState().getPetId());
             submitViewModel.setState(currentState);
 
+            submitController.autoFill();
             viewPetDetailsController.switchToApplicationView();
 
             dispose();

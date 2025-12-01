@@ -4,7 +4,8 @@ import interface_adapter.ViewModel;
 
 public class SubmitViewModel extends ViewModel<SubmitState> {
 
-    public static final String TITLE_LABEL = "Start Your Application";
+    public static final String TITLE_LABEL = "Start Your Application Now";
+    public static final String NOTE = "(All fields are required)";
     public static final String USERNAME_LABEL = "Username";
     public static final String FIRSTNAME_LABEL = "First Name";
     public static final String LASTNAME_LABEL = "Last Name";
@@ -26,4 +27,11 @@ public class SubmitViewModel extends ViewModel<SubmitState> {
         setState(new SubmitState());
     }
 
+    /**
+     * Reset the entire form by creating a new empty SubmitState
+     * and notifying all listeners (SubmitView).
+     */
+    public void resetState() {
+        setState(new SubmitState());
+        firePropertyChange();}
 }
