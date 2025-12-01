@@ -10,7 +10,7 @@ import data_access.DBApplicationDataAccessObject;
 import data_access.DatabaseApplicationGateway;
 import data_access.DatabaseConnection;
 import data_access.DatabasePetGateway;
-import data_access.FileUserDataAccessObject;
+import data_access.DBUserDataAccessObject;
 import data_access.PetAPIGatewayInterface;
 import data_access.SQLitePetDataAccessObject;
 import entity.PetFactory;
