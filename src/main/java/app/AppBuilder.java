@@ -18,10 +18,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.manage_application.ManageApplicationController;
-import interface_adapter.manage_application.ManageApplicationView;
-import interface_adapter.manage_application.ManageApplicationViewModel;
-import interface_adapter.manage_application.ManageApplicationsPageController;
+import interface_adapter.manage_application.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -73,10 +70,10 @@ public class AppBuilder {
     // of the classes from the data_access package
 
     // DAO version using local file storage
-    //final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
     // DAO version using a shared external database
-    final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    //final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
 
 
     // Application DAO using a database
@@ -104,10 +101,16 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private AddPetViewModel addPetViewModel;
+    private DeletePetViewModel deletePetViewModel;
     private HomeViewModel homeViewModel;
     private HomeView homeView;
     private ManageApplicationController manageApplicationController;
     private ManageApplicationInteractor manageApplicationInteractor;
+    private AddPetView addPetView;
+    private DeletePetView deletePetView;
+    private AddPetController addPetController;
+    private DeletePetController deletePetController;
+    private SQLitePetDataAccessObject petRepo = new SQLitePetDataAccessObject();
 
     public AppBuilder() {
         try {
@@ -208,15 +211,24 @@ public class AppBuilder {
         BrowseFilterPageController browseFilterPageController =
                 new BrowseFilterPageController(viewManagerModel, browseFilterViewModel);
         AddPetPageController addPetPageController = new AddPetPageController(viewManagerModel, addPetViewModel);
+        DeletePetPageController deletePetPageController = new DeletePetPageController(viewManagerModel, deletePetViewModel);
         ManageApplicationsPageController manageApplicationsPageController =
                 new ManageApplicationsPageController(viewManagerModel, manageApplicationViewModel);
+        final LogoutOutputBoundary logoutOutputBoundary =
+                new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController =
+                new LogoutController(logoutInteractor);
 
         // Create the actual HomeView
         homeView = new HomeView(
                 loggedInViewModel,
                 browseFilterPageController,
                 addPetPageController,
-                manageApplicationsPageController
+                deletePetPageController,
+                manageApplicationsPageController,
+                logoutController
         );
 
         cardPanel.add(homeView, "home");
@@ -284,6 +296,51 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addAddPetView() {
+        this.addPetView = new AddPetView();
+        cardPanel.add(addPetView, addPetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDeletePetView() {
+        this.deletePetView = new DeletePetView();
+        cardPanel.add(deletePetView, deletePetView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addAddPetUseCase() {
+
+        this.addPetViewModel = new AddPetViewModel();
+        AddPetOutputBoundary presenter = new AddPetPresenter(addPetViewModel);
+
+        PetFactory factory = new PetFactory();
+
+        AddPetInputBoundary interactor =
+                new AddPetInteractor(factory, petRepo, presenter);
+
+        this.addPetController = new AddPetController(interactor);
+        this.addPetView.setViewModel(addPetViewModel);
+        this.addPetView.setAddPetController(addPetController);
+
+        return this;
+    }
+
+    public AppBuilder addDeletePetUseCase() {
+
+        this.deletePetViewModel = new DeletePetViewModel();
+        DeletePetOutputBoundary presenter = new DeletePetPresenter(deletePetViewModel);
+
+        DeletePetInputBoundary interactor =
+                new DeletePetInteractor(petRepo, presenter);
+
+        this.deletePetController = new DeletePetController(interactor);
+
+        this.deletePetView.setViewModel(deletePetViewModel);
+        this.deletePetView.setDeletePetController(deletePetController);
+
+        return this;
+    }
+
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
@@ -300,8 +357,6 @@ public class AppBuilder {
         return this;
     }
 
-
-
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -312,7 +367,6 @@ public class AppBuilder {
 
         return application;
     }
-
 
 }
 
