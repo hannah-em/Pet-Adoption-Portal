@@ -27,6 +27,7 @@ public class SubmitPresenter implements SubmitOutputBoundary {
         //On success, switch back to BrowserFilter view
         viewManagerModel.setState(browseFilterViewModel.getViewName());
         viewManagerModel.firePropertyChange();
+        submitViewModel.resetState();
     }
 
     @Override

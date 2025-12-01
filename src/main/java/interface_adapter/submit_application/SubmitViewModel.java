@@ -27,4 +27,11 @@ public class SubmitViewModel extends ViewModel<SubmitState> {
         setState(new SubmitState());
     }
 
+    /**
+     * Reset the entire form by creating a new empty SubmitState
+     * and notifying all listeners (SubmitView).
+     */
+    public void resetState() {
+        setState(new SubmitState());
+        firePropertyChange();}
 }

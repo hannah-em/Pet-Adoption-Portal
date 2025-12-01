@@ -15,8 +15,8 @@ public class SubmitState {
     private String reason = "";
     private String prevExp = "";
     private String availability = "";
-    private String error = "";
-    private String success = "";
+    private String error = null;
+    private String success = null;
 
 
     public String getPetId() {

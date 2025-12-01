@@ -422,12 +422,18 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         homeEviInputArea.setText(state.getHomeEvi());
         telInputField.setText(state.getTel());
         emailInputField.setText(state.getEmail());
-
-        if (state.getError() != null) {
+//
+        reasonInputArea.setText(state.getReason());
+        prevExpInputArea.setText(state.getPrevExp());
+        availabilityInputArea.setText(state.getAvailability());
+//
+        if (state.getError() != null && !state.getError().isEmpty()) {
             JOptionPane.showMessageDialog(this, state.getError());
+            state.setError(null);
         }
-        if (state.getSuccess() != null) {
+        if (state.getSuccess() != null && !state.getSuccess().isEmpty()) {
             JOptionPane.showMessageDialog(this, state.getSuccess());
+            submitViewModel.resetState();
         }
     }
 
@@ -440,18 +446,18 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
         this.submitController.autoFill();
     }
 
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            SubmitViewModel viewModel = new SubmitViewModel();
-
-            SubmitView submitView = new SubmitView(viewModel);
-
-            JFrame frame = new JFrame("Submit View Preview");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(submitView);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        javax.swing.SwingUtilities.invokeLater(() -> {
+//            SubmitViewModel viewModel = new SubmitViewModel();
+//
+//            SubmitView submitView = new SubmitView(viewModel);
+//
+//            JFrame frame = new JFrame("Submit View Preview");
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            frame.setContentPane(submitView);
+//            frame.pack();
+//            frame.setLocationRelativeTo(null);
+//            frame.setVisible(true);
+//        });
+//    }
 }
