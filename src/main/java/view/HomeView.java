@@ -36,14 +36,23 @@ public class HomeView extends JPanel implements PropertyChangeListener {
 
         this.loggedInViewModel = loggedInViewModel;
         loggedInViewModel.addPropertyChangeListener(this);
+        
+        // Change to BorderLayout
+        setLayout(new BorderLayout(10, 10));
+        
 
-        setLayout(new GridLayout(5, 1, 10, 10));
+        // Added Logout button to the top right
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topPanel.add(logoutButton);
+        add(topPanel, BorderLayout.NORTH);
 
-        add(browseButton);
-        add(addPetButton);
-        add(deletePetButton);
-        add(viewApplicationsButton);
-        add(logoutButton);
+        // button in middle
+        JPanel centerPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        centerPanel.add(browseButton);
+        centerPanel.add(addPetButton);
+        centerPanel.add(deletePetButton);
+        centerPanel.add(viewApplicationsButton);
+        add(centerPanel, BorderLayout.CENTER);
 
         // Link buttons to controllers
         browseButton.addActionListener(e -> browsePageController.execute());
