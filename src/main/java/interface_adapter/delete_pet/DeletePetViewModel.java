@@ -22,5 +22,9 @@ public class DeletePetViewModel {
     public void addPropertyChangeListener(PropertyChangeListener l) {
         support.addPropertyChangeListener(l);
     }
+
+    public String getViewName() {
+        return "Delete Pet";
+    }
 }
 
