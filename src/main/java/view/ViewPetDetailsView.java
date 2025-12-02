@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 public class ViewPetDetailsView extends JFrame implements PropertyChangeListener {
 
     private final ViewPetDetailsViewModel viewModel;
-    private final SubmitViewModel submitViewModel = new SubmitViewModel();
+    private SubmitViewModel submitViewModel;
     private final String viewName = "view pet details";
     private ViewPetDetailsController viewPetDetailsController;
     private SubmitController submitController;
@@ -35,7 +35,7 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
     public void setSubmitController(SubmitController submitController) {
         this.submitController = submitController;
     }
-
+    public void setSubmitViewModel(SubmitViewModel submitViewModel) { this.submitViewModel = submitViewModel; }
 
     public ViewPetDetailsView(ViewPetDetailsViewModel viewModel) {
         this.viewModel = viewModel;
