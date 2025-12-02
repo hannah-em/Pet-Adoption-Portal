@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import interface_adapter.ViewManagerModel;
 
 public class AddPetView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -33,6 +34,7 @@ public class AddPetView extends JPanel implements ActionListener, PropertyChange
     // The controller for this view
     private AddPetController addPetController;
     private AddPetViewModel viewModel;
+    private ViewManagerModel viewManagerModel;
 
     public AddPetView() {
         setLayout(new BorderLayout());
@@ -102,10 +104,10 @@ public class AddPetView extends JPanel implements ActionListener, PropertyChange
         }
 
         else if (source == cancelButton) {
-            // Close the parent window
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            if (frame != null) {
-                frame.dispose();
+            // Return to home view
+            if (viewManagerModel != null) {
+                viewManagerModel.setState("home");
+                viewManagerModel.firePropertyChange();
             }
         }
 
@@ -132,5 +134,9 @@ public class AddPetView extends JPanel implements ActionListener, PropertyChange
     public void setViewModel(AddPetViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
+    }
+
+    public void setViewManagerModel(ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
     }
 }
