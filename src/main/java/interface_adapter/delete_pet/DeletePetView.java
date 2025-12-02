@@ -1,5 +1,6 @@
 package interface_adapter.delete_pet;
 
+import interface_adapter.ViewManagerModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
 
     private DeletePetController deletePetController;
     private DeletePetViewModel viewModel;
+    private ViewManagerModel viewManagerModel;
 
     public DeletePetView() {
         setLayout(new BorderLayout());
@@ -54,13 +56,12 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
         }
 
         else if (source == cancelButton) {
-            // Close the parent window
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            if (frame != null) {
-                frame.dispose();
+            // Return to Home view
+            if (viewManagerModel != null) {
+                viewManagerModel.setState("home");
+                viewManagerModel.firePropertyChange();
             }
         }
-
     }
 
     @Override
@@ -104,5 +105,9 @@ public class DeletePetView extends JPanel implements ActionListener, PropertyCha
 
     public void setDeletePetController(DeletePetController deletePetController) {
         this.deletePetController = deletePetController;
+    }
+
+    public void setViewManagerModel(ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
     }
 }

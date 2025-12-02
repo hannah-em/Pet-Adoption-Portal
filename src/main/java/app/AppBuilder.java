@@ -324,12 +324,14 @@ public class AppBuilder {
 
     public AppBuilder addAddPetView() {
         this.addPetView = new AddPetView();
+        this.addPetView.setViewManagerModel(viewManagerModel);
         cardPanel.add(addPetView, addPetView.getViewName());
         return this;
     }
 
     public AppBuilder addDeletePetView() {
         this.deletePetView = new DeletePetView();
+        this.deletePetView.setViewManagerModel(viewManagerModel);
         cardPanel.add(deletePetView, deletePetView.getViewName());
         return this;
     }
