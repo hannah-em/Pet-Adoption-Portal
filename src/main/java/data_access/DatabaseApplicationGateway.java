@@ -105,6 +105,15 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+        // Calling loadAllApplicationsIntoMap() again
+        // because adding application as a visitor, then switching to admin account
+        // does not run this function again
+        // which means as an admin, you can't see the application you just added
+        // as a visitor
+
+        loadAllApplicationsIntoMap();
     }
 
 
