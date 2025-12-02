@@ -67,14 +67,25 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        panel.add(new JLabel("Application ID: " + app.getApplicationId()));
-        panel.add(new JLabel("Pet ID: " + app.getPetId()));
+        // This is to offset the wrong order information is stored in applications
+        String application_id = app.getApplicationId();
+        String occupation = app.getPetId();
+        String pet_id = app.getFirstName();
+        String first_name = app.getLastName();
+        String last_name = app.getEmail();
+        String email = app.getPhoneNumber();
+        String phone_number = app.getAge();
+        String age = app.getOccupation();
 
-        panel.add(new JLabel("First Name: " + app.getFirstName()));
-        panel.add(new JLabel("Last Name: " + app.getLastName()));
-        panel.add(new JLabel("Email: " + app.getEmail()));
-        panel.add(new JLabel("Phone: " + app.getPhoneNumber()));
-        panel.add(new JLabel("Age: " + app.getAge()));
+
+        panel.add(new JLabel("Application ID: " + application_id));
+        panel.add(new JLabel("Pet ID: " + pet_id)); // actually student));
+//
+        panel.add(new JLabel("First Name: " + first_name));
+        panel.add(new JLabel("Last Name: " + last_name));
+        panel.add(new JLabel("Email: " + email));
+        panel.add(new JLabel("Phone: " + phone_number));
+        panel.add(new JLabel("Age: " + age));
         panel.add(new JLabel("Occupation: " + app.getOccupation()));
 
         panel.add(new JLabel("Reason: " + app.getReason()));

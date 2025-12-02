@@ -15,8 +15,8 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
         loadAllApplicationsIntoMap();
     }
 
-
     private void loadAllApplicationsIntoMap() {
+//        deleteAllApplications(); // UNCOMMENT this line if you want to delete all applications
         String sql = "SELECT * FROM applications";
 
         try (Statement stmt = conn.createStatement();
@@ -38,6 +38,18 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
                         rs.getString("previous_experience")
                 );
                 applicationMap.put(application.getApplicationId(), application);
+                System.out.println("app_id: " + rs.getString("id")+
+                        "pet_id: " + rs.getString("pet_id")+
+                        "first_name: " + rs.getString("first_name")+
+                        "last_name: " + rs.getString("last_name")+
+                        "email: " + rs.getString("email")+
+                        "phone: " + rs.getString("phone")+
+                        "age: " + rs.getString("age")+
+                        "occupation: " + rs.getString("occupation")+
+                        "reason: " + rs.getString("reason")+
+                        "environment: " + rs.getString("environment")+
+                        "availbaility: " + rs.getString("availability")+
+                        "prev_exp:" + rs.getString("previous_experience"));
             }
 
             System.out.println("📥 Loaded " + applicationMap.size() + " applications into memory map.");
@@ -76,11 +88,32 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
 
             // 🔥 save to memory list too
             applicationMap.put(application.getApplicationId(), application);
+            System.out.println("app_id = " + application.getApplicationId());
+            System.out.println("pet_id = " + application.getPetId());
+            System.out.println("first_name = " + application.getFirstName());
+            System.out.println("last_name = " + application.getLastName());
+            System.out.println("email = " + application.getEmail());
+            System.out.println("phone_number = " + application.getPhoneNumber());
+            System.out.println("age = " + application.getAge());
+            System.out.println("occupation = " + application.getOccupation());
+            System.out.println("reason = " + application.getReason());
+            System.out.println("home_environment = " + application.getHomeEnvironment());
+            System.out.println("availability = " + application.getAvailability());
+            System.out.println("previous_experience = " + application.getPreviousExperience());
 
             System.out.println("✅ Application saved: " + application.getApplicationId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+        // Calling loadAllApplicationsIntoMap() again
+        // because adding application as a visitor, then switching to admin account
+        // does not run this function again
+        // which means as an admin, you can't see the application you just added
+        // as a visitor
+
+        loadAllApplicationsIntoMap();
     }
 
 
@@ -119,7 +152,24 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
             e.printStackTrace();
         }
     }
+
+    public void deleteAllApplications() { // FOR INTERNAL USE
+        String sql = "DELETE FROM applications";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+
+            // clear the map since everything is deleted
+            applicationMap.clear();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+
 
 
 
