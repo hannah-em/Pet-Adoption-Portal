@@ -15,8 +15,8 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
         loadAllApplicationsIntoMap();
     }
 
-
     private void loadAllApplicationsIntoMap() {
+//        deleteAllApplications(); // UNCOMMENT this line if you want to delete all applications
         String sql = "SELECT * FROM applications";
 
         try (Statement stmt = conn.createStatement();
@@ -143,7 +143,24 @@ public class DatabaseApplicationGateway implements ApplicationGatewayInterface {
             e.printStackTrace();
         }
     }
+
+    public void deleteAllApplications() { // FOR INTERNAL USE
+        String sql = "DELETE FROM applications";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+
+            // clear the map since everything is deleted
+            applicationMap.clear();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+
 
 
 
