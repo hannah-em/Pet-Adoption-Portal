@@ -37,9 +37,10 @@ public class Application {
     /**
      * Creates a new application for database->program display interaction
      */
-    public Application(String application_id, String first_name, String last_name, String email,
-                       String phone_number, String age, String occupation, String pet_id, String reason, String environment,
+    public Application(String application_id, String pet_id, String first_name, String last_name, String email,
+                       String phone_number, String age, String occupation, String reason, String environment,
                        String availability, String experience) {
+        // 12 parameters for database -> program constructor
         this.application_id = application_id;
         this.pet_id = pet_id;
         this.first_name = first_name;
@@ -64,6 +65,8 @@ public class Application {
     public Application(String pet_id, String first_name, String last_name, String email,
                        String phone_number, String age, String occupation, String reason_to_adopt,
                        String home_environment, String availability, String previous_experience) {
+        // 11 parameters for user -> program constructor
+
 
         // set all attributes
         this.pet_id = pet_id;
