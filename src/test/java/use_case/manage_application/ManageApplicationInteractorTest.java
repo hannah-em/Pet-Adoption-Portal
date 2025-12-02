@@ -45,8 +45,8 @@ class ManageApplicationInteractorTest {
         FakeDAO dao = new FakeDAO();
         FakePresenter presenter = new FakePresenter();
 
-        Application app1 = new Application("eeee12394059", "John", "Doe", "jd@mail.com",
-                "123456", "30", "Engineer", "pet123", "I love pets", "Big house", "Full time", "None");
+        Application app1 = new Application("eeee12394059", "pet123", "John", "Doe", "jd@mail.com",
+                "123456", "30", "Engineer", "I love pets", "Big house", "Full time", "None");
         dao.apps.add(app1);
 
         ManageApplicationInteractor interactor = new ManageApplicationInteractor(dao, presenter);
