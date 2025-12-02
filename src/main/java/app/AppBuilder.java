@@ -75,14 +75,7 @@ import use_case.submit_application.SubmitOutputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInputBoundary;
 import use_case.view_pet_details.ViewPetDetailsInteractor;
 import use_case.view_pet_details.ViewPetDetailsOutputBoundary;
-import view.BrowseFilterView;
-import view.HomeView;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.SubmitView;
-import view.ViewManager;
-import view.ViewPetDetailsView;
+import view.*;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
