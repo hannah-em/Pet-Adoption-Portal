@@ -58,11 +58,407 @@ public class SubmitInteractorTest {
     }
 
     @Test
-    void failureMissingInfoTest() {
+    void failureMissingAvailabilityTest() {
         SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
                 "rebecca", "L", "29", "teacher",
                 "Fifth Avenue", "good", "123456789", "1234@gamil.com",
                 "love pets", "no experience", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingExpTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "love pets", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingReasonTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingEmailTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingTelTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "good", "", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingHomeEviTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingAddressTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "teacher",
+                "", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingOccupationTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "29", "",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingAgeTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "L", "", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingLastnameTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "rebecca", "", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingFirstnameTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "rebecca123",
+                "", "L", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
+        SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
+        SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
+
+        SubmitOutputBoundary failurePresenter = new SubmitOutputBoundary() {
+
+            @Override
+            public void prepareSuccessView(String successMessage){
+                fail("Use case success is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage){
+                assertEquals("Some required fields are missing.", errorMessage);
+            }
+
+            @Override
+            public void prepareAutofillView(SubmitOutputData submitOutputData) {
+                fail("Use case autofill is unexpected.");
+            }
+
+            @Override
+            public void switchToBrowserFilterView(){
+                fail("Use case switched to other view is unexpected.");
+            }
+        };
+
+        SubmitInputBoundary interactor = new SubmitInteractor(userRepository, applicationRepository, failurePresenter);
+        interactor.execute(inputData);
+    }
+
+    @Test
+    void failureMissingUsernameTest() {
+        SubmitInputData inputData = new SubmitInputData("0111", "",
+                "Rebecca", "L", "29", "teacher",
+                "Fifth Avenue", "good", "123456789", "1234@gamil.com",
+                "", "", "");
         SubmitUserDataAccessInterface  userRepository = new InMemoryUserDataAccessObject();
         SubmitApplicationDataAccessInterface applicationRepository = new InMemoryApplicationDataAccessObject();
 
