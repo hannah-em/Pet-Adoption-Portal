@@ -1,10 +1,9 @@
-package use_case.addpet;
+package use_case.add_pet;
 
 import data_access.InMemoryPetDataAccessObject;
 import entity.Pet;
 import entity.PetFactory;
 import org.junit.jupiter.api.Test;
-import use_case.add_pet.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

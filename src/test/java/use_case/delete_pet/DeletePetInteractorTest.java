@@ -1,10 +1,9 @@
-package use_case.deletepet;
+package use_case.delete_pet;
 
 import data_access.InMemoryPetDataAccessObject;
 import entity.Pet;
 import entity.PetFactory;
 import org.junit.jupiter.api.Test;
-import use_case.delete_pet.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
