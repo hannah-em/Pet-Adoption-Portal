@@ -192,9 +192,13 @@ public class AppBuilder {
         manageApplicationController =
                 new ManageApplicationController(interactor);
 
+
         // 5. View (controller is NOT null now)
         manageApplicationView =
                 new ManageApplicationView(manageApplicationController, manageApplicationViewModel);
+
+        manageApplicationView.setViewManagerModel(viewManagerModel);
+
 
         cardPanel.add(manageApplicationView, manageApplicationView.getViewName());
         return this;

@@ -9,11 +9,13 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import interface_adapter.ViewManagerModel;
 
 public class ManageApplicationView extends JPanel implements PropertyChangeListener {
 
     private final ManageApplicationController controller;
     private final ManageApplicationViewModel viewModel;
+    private ViewManagerModel viewManagerModel;
 
     private final JPanel cardContainer;
 
@@ -23,6 +25,17 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
         this.viewModel = viewModel;
 
         setLayout(new BorderLayout());
+
+        // Added Back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            if (viewManagerModel != null) {
+                viewManagerModel.setState("home");
+                viewManagerModel.firePropertyChange();
+            }
+        });
+        add(backButton, BorderLayout.NORTH);
+
 
         // scrollable container
         cardContainer = new JPanel();
@@ -71,17 +84,6 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
 
 
 
-
-
-
-
-
-
-
-
-
-
-
         panel.add(new JLabel("Application ID: " + app.getApplicationId()));
         panel.add(new JLabel("Pet ID: " + app.getPetId()));
 
@@ -105,5 +107,10 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
     public String getViewName() {
         return "Manage Application";
     }
+
+    public void setViewManagerModel(ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
+    }
+
 }
 
