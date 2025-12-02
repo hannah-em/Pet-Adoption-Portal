@@ -50,6 +50,9 @@ public class SubmitView extends JPanel implements ActionListener, PropertyChange
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SubmitViewModel.USERNAME_LABEL), usernameInputField);
+        //prevent user from editing their username while applying
+        usernameInputField.setEditable(false);
+
         final LabelTextPanel firstnameInfo = new LabelTextPanel(
                 new JLabel(SubmitViewModel.FIRSTNAME_LABEL), firstnameInputField);
         final LabelTextPanel lastnameInfo = new LabelTextPanel(
