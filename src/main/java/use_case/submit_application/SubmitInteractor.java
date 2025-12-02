@@ -78,7 +78,13 @@ public class SubmitInteractor implements SubmitInputBoundary {
     @Override
     public void autofill() {
         String username = userDataAccessObject.getCurrentUsername();
+        if (username == null || username.isEmpty()) {
+            return;
+        }
         User user = userDataAccessObject.get(username);
+        if (!(user instanceof Visitor)) {
+            return;
+        }
         Visitor visitor = (Visitor) user;
         SubmitOutputData outputData = new SubmitOutputData(
                 visitor.getName(),
