@@ -58,6 +58,7 @@ public class SubmitInteractor implements SubmitInputBoundary {
             visitor.setTel(submitInputData.getTel());
             userDataAccessObject.save(visitor);
             //create an application and save it into database
+            System.out.println("Pet_id in submit interactor: " + submitInputData.getPetId());
             final Application application = new Application(submitInputData.getPetId(),
                     visitor.getFirstName(), visitor.getLastName(), visitor.getEmail(), visitor.getTel(),
                     visitor.getAge(), visitor.getOccupation(), submitInputData.getReason(), visitor.getHomeEvi(),

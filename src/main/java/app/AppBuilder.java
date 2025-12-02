@@ -270,6 +270,7 @@ public class AppBuilder {
         this.submitController = new SubmitController(submitInputBoundary);
         submitView.setSubmitController(submitController);
         viewPetDetailsView.setSubmitController(submitController);
+        viewPetDetailsView.setSubmitViewModel(submitViewModel);
         return this;
     }
 

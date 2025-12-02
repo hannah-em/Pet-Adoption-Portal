@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 public class ViewPetDetailsView extends JFrame implements PropertyChangeListener {
 
     private final ViewPetDetailsViewModel viewModel;
-    private final SubmitViewModel submitViewModel = new SubmitViewModel();
+    private SubmitViewModel submitViewModel;
     private final String viewName = "view pet details";
     private ViewPetDetailsController viewPetDetailsController;
     private SubmitController submitController;
@@ -35,7 +35,7 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
     public void setSubmitController(SubmitController submitController) {
         this.submitController = submitController;
     }
-
+    public void setSubmitViewModel(SubmitViewModel submitViewModel) { this.submitViewModel = submitViewModel; }
 
     public ViewPetDetailsView(ViewPetDetailsViewModel viewModel) {
         this.viewModel = viewModel;
@@ -58,10 +58,12 @@ public class ViewPetDetailsView extends JFrame implements PropertyChangeListener
         adoptButton.addActionListener(e -> {
             SubmitState currentState = submitViewModel.getState();
             currentState.setPetId(viewModel.getState().getPetId());
+            System.out.println("pet_id sent from viewpetdetail: " + viewModel.getState().getPetId());
             submitViewModel.setState(currentState);
-
+            System.out.println("pet_id from submitstate: " + currentState.getPetId());
             submitController.autoFill();
             viewPetDetailsController.switchToApplicationView();
+            System.out.println("pet_id after switchToApplicationView: " + currentState.getPetId());
 
             dispose();
         });
