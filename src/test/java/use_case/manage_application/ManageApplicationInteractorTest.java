@@ -56,6 +56,22 @@ class ManageApplicationInteractorTest {
         // Verify presenter got the same applications
         assertNotNull(presenter.captured);
         assertEquals(1, presenter.captured.getApplications().size());
-        assertEquals("John", presenter.captured.getApplications().get(0).getFirstName());
+
+        Application capturedApp = presenter.captured.getApplications().get(0);
+
+        assertEquals("eeee12394059", capturedApp.getApplicationId());
+        assertEquals("John", capturedApp.getFirstName());
+        assertEquals("Doe", capturedApp.getLastName());
+        assertEquals("jd@mail.com", capturedApp.getEmail());
+        assertEquals("123456", capturedApp.getPhoneNumber());
+        assertEquals("30", capturedApp.getAge());
+        assertEquals("Engineer", capturedApp.getOccupation());
+        assertEquals("pet123", capturedApp.getPetId());
+        assertEquals("I love pets", capturedApp.getReason());
+        assertEquals("Big house", capturedApp.getHomeEnvironment());
+        assertEquals("Full time", capturedApp.getAvailability());
+        assertEquals("None", capturedApp.getPreviousExperience());
+        assertEquals("processing", capturedApp.getStatus()); // default status
+
     }
 }
