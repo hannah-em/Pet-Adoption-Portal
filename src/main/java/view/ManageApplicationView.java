@@ -69,20 +69,22 @@ public class ManageApplicationView extends JPanel implements PropertyChangeListe
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // This is to offset the wrong order information is stored in applications
-//        String application_id = app.getApplicationId();
-//        String occupation = app.getPetId();
-//        String pet_id = app.getFirstName();
-//        String first_name = app.getLastName();
-//        String last_name = app.getEmail();
-//        String email = app.getPhoneNumber();
-//        String phone_number = app.getAge();
-//        String age = app.getOccupation();
+
+
+
+
+
+
+
+
+
+
+
 
 
         panel.add(new JLabel("Application ID: " + app.getApplicationId()));
-        panel.add(new JLabel("Pet ID: " + app.getPetId())); // actually student));
-//
+        panel.add(new JLabel("Pet ID: " + app.getPetId()));
+
         panel.add(new JLabel("First Name: " + app.getFirstName()));
         panel.add(new JLabel("Last Name: " + app.getLastName()));
         panel.add(new JLabel("Email: " + app.getEmail()));
