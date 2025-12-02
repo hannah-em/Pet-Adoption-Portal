@@ -29,11 +29,13 @@ public class AddPetAppBuilder {
 
     public AddPetAppBuilder addAddPetView() {
         this.addPetView = new AddPetView();
+        this.addPetView.setViewManagerModel(viewManagerModel);
         return this;
     }
 
     public AddPetAppBuilder addDeletePetView() {
         this.deletePetView = new DeletePetView();
+        this.deletePetView.setViewManagerModel(viewManagerModel);
         return this;
     }
 
